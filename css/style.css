@@ -38,7 +38,16 @@
 
 }
 
+/* green-theme {
+  --dark-green: #275C7B;
+  --bright-green:#3DA87A;
+  --test-green:#348680;
+} */
+
 :root {
+  --dark-green: #275c7b55;
+  --bright-green:#3da87a58;
+  --test-green:#3486804c;
 
   /**
    * color
@@ -103,30 +112,6 @@ html {
 :focus { outline-offset: 4px; }
 
 
-/**
- * scrollbar style
- */
-
-::-webkit-scrollbar { width: 16px; }
-
-
-::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 20px;
-  border: 4px solid;
-}
-
-.light-theme::-webkit-scrollbar-thumb { border-color: hsl(0, 0%, 90%); }
-
-.dark-theme::-webkit-scrollbar-thumb { border-color: hsl(219, 27%, 20%); }
-
-.light-theme::-webkit-scrollbar-track { background: hsl(0, 0%, 90%); }
-
-.dark-theme::-webkit-scrollbar-track { background: hsl(219, 27%, 20%); }
-
-
-
-
 
 /*-----------------------------------*\ 
   #BASE STYLE
@@ -164,21 +149,6 @@ html {
 
 .text-tiny { font-size: var(--fs-5); }
 
-
-
-
-
-/*-----------------------------------*\ 
-  #REUSED STYLE
-\*-----------------------------------*/
-
-.container {
-  margin-inline: auto;
-  margin: auto; /* fallback for margin-inline */
-  padding: 0 15px;
-}
-
-
 /*-----------------------------------*\ 
   #Extra style for dark theme
 \*-----------------------------------*/
@@ -207,11 +177,17 @@ html {
 \*-----------------------------------*/
 
 .header { 
-  background: var(--background-primary); 
+  background-color: var(--bright-green);
+  /* background-color: #3DA87A; */
+  /* background: var(--background-primary);  */
   /* padding: 10px; */
   /* margin-bottom : 20px; */
-  margin-inline: 20px;
-  margin-top: 10px;
+  padding-inline: 20px;
+  padding-top: 10px;
+}
+
+.header .div {
+  background: var(--bright-green);
 }
 
 /* header div {
@@ -228,18 +204,25 @@ html {
 \*-----------------------------------*/
 
 .main {
-  background: var(--background-secondary);
+  
   padding: var(--py) 0;
   /* max-width: 800px; */
 }
 
 .main {
+  /* align-items:  ; */
+  background-image: url("../img/mountain_1.jpg");
+  /* background-image: url("../img/forest_0.jpg"); */
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
   display: grid;
   grid-template-columns: 2fr 5fr;
   gap: 50px;
 }
 
 .blog-index {
+  background-color: var(--test-green);
   min-width: 120px;
   max-width: 150px;
   margin: 10px;
@@ -256,6 +239,12 @@ html {
 
 .blog-index .element-index .title-index {
   padding-inline: 5px;
+}
+
+.blog {
+  background-color: var(--dark-green); 
+  /* background-color: hsla(var(--dark-green), 0.9); */
+  /* background-color: ; */
 }
 
 .blog .h2 {

@@ -6,6 +6,9 @@
 } */
 
 :root {
+
+  --footer-height: 3%;
+
   --dark-green: #275c7b55;
   --bright-green:#5b98c958;
   --test-green:#3486804c;
@@ -140,6 +143,31 @@ html {
   padding-right: 20px;
 }
 
+/*-----------------------------------*\ 
+  #FOOTER SECTION
+\*-----------------------------------*/
+
+.footer {
+  width: 100%;
+  /* height: 50px; */
+  text-align: center;
+  /* zrk note: if fixed, the bar will always be set on the bottom and never move */
+  position: fixed; 
+  bottom: 0;
+  left: 0px;
+
+  height: var(--footer-height);
+  background-color: hsla(var(--bright-green), 100%);
+
+  /* padding-bottom: 10px; */
+  margin-bottom: 10px;
+}
+
+.footer p {
+  /* -webkit-text-stroke: 0.5px #ffffffd2; */
+  -webkit-text-fill-color: azure;
+  /* padding-bottom: 10px; */
+}
 
 
 /*-----------------------------------*\ 
@@ -147,42 +175,39 @@ html {
 \*-----------------------------------*/
 
 body {
-  background-image: url("../img/mountain_1.jpg");
+  background-image: url("../img/background/mountain_1.jpg");
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-size: cover;
 }
 
-.main {
-  
-  padding: var(--py) 0;
-  /* max-width: 800px; */
-}
-
-.main {
-  /* background-image: url("../img/mountain_1.jpg"); */
-  /* background-image: url("../img/forest_0.jpg"); */
+.main-container {
+  height: 100%;
+  /* background */
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-size: cover;
-  display: grid;
-  grid-template-columns: 2fr 5fr;
+  /* framework */
+  display: flex;
+  /* grid-template-columns: 2fr 5fr; */
   gap: 50px;
 }
 
 .blog-index {
   background-color: var(--test-green-1);
-  min-width: 120px;
-  max-width: 150px;
-  margin: 10px;
+  min-width: 250px;
+  max-width: 300px;
   border-right: 1px;
+  padding-top: 10px;
+  /* position: fixed; */
 }
 
 .blog-index .element-index {
-  padding-inline: 5px;
+  padding-inline: 10px;
+  padding-top: 3px;
   border: 1px;
-  display: grid;
-  grid-template-columns: 1fr 5fr;
+  display: flex;
+  /* grid-template-columns: 1fr 5fr; */
   align-items: center;
 }
 
@@ -192,8 +217,11 @@ body {
 
 .blog {
   background-color: var(--dark-green); 
+  /* margin: 20px; */
+  max-width: 750px;
   /* background-color: hsla(var(--dark-green), 0.9); */
   /* background-color: ; */
+  float: left;
 }
 
 .blog .h2 {
@@ -249,10 +277,7 @@ body {
 .blog-text,
 .profile-wrapper { display: none; }
 
-.blog {
-  margin: 20px;
-  max-width: 750px;
-}
+
 
 .blog .wrapper {
   display:         flex;
@@ -273,14 +298,7 @@ body {
   color: var(--foreground-tertiary);
 }
 
-.blog .separator {
-  background: var(--foreground-tertiary);
-  margin-inline: 3px;
-  margin: 0 3px; /* fallback for margin-inline */
-  width:  3px;
-  height: 3px;
-  border-radius: 3px;
-}
+
 
 .blog ion-icon { --ionicon-stroke-width: 50px; }
 
@@ -308,39 +326,6 @@ body {
 
 
 
-/*-----------------------------------*\ 
-  #FOOTER
-\*-----------------------------------*/
-
-footer { background: var(--background-primary); }
-
-footer .container {
-  padding: var(--py) 15px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 30px;
-}
-
-footer .wrapper { text-align: center; }
-
-.footer-logo { margin-bottom: 10px; }
-
-.footer-text {
-  color: var(--foreground-secondary);
-  max-width: 300px;
-  margin-inline: auto;
-  margin: auto; /* fallback for margin-inline */
-}
-
-.footer-title {
-  color: var(--foreground-primary);
-  font-weight: 700;
-  margin-bottom: 0.4rem;
-}
-
-.footer-link { color: var(--foreground-secondary); }
-
-.footer-link:hover { color: var(--accent); }
 
 .copyright {
   color: var(--foreground-secondary);
@@ -435,15 +420,6 @@ footer .wrapper { text-align: center; }
   .container { padding: 0 30px; }
 
 
-
-  /**
-   * HEADER 
-   */
-
-  .navbar { padding: 30px 0; }
-
-
-
   /**
    * BLOG 
    */
@@ -501,21 +477,6 @@ footer .wrapper { text-align: center; }
     align-items: start;
     gap: 0;
   }
-
-
-
-  /**
-   * FOOTER 
-   */
-
-  footer .container {
-    padding: var(--py) 30px;
-    grid-template-columns: 2fr 1fr 1fr;
-  }
-
-  footer .wrapper { text-align: left; }
-
-  .footer-text { margin: 0; }
 
 }
 

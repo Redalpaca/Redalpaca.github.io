@@ -1,0 +1,39 @@
+/*-----------------------------------*\ 
+  #HEADER
+\*-----------------------------------*/
+
+.header { 
+    background-color: var(--bright-green);
+    padding-inline: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .header > *p {
+    font-size: 0.75rem;
+  }
+  
+  .header .left-container{
+    display: flex;
+    align-items: center;
+  }
+  
+  .header .left-container > * {
+    float: left;
+    padding-right: 20px;
+  }
+  
+  .header .right-container {
+    display: flex;
+    align-items: center;
+    float: right;
+  }
+  
+  .header .right-container > * {
+    float: right;
+    padding-right: 25px;
+  }

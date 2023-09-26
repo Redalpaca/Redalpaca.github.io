@@ -1,3 +1,12 @@
+.green-theme {
+  --background-image-path: "../img/background/mountain_0.jpg";
+  /* zrk note 这些变量名都要改, 到时候更换class就可以直接切换 */
+  --dark-green: #275c7b55; 
+  --bright-green:#5b98c958;
+  --test-green:#3486804c;
+  --test-green-1:#2b648071;
+}
+
 :root {
 
   --background-image-path: "../img/background/mountain_0.jpg";

@@ -3,10 +3,10 @@
 \*-----------------------------------*/
 
 .header { 
-    background-color: var(--bright-green);
+    background-color: var(--bright-green, #5b98c958);
     padding-inline: 20px;
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
     display: flex;
     flex-direction: row;
     align-items: center;

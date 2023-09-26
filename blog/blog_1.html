@@ -1,0 +1,123 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>Redalpaca's site</title>
+    <!-- <link rel="stylesheet" href="./css/style.css"> -->
+    <link rel="stylesheet" href="../css/markdown.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="shortcut icon" href="../img/icon/avatar.png" type="image/x-icon">
+    <script>
+      
+    </script>
+  </head>
+  <body for="html-export">
+    <!-- <script src="./js/general.js"></script> -->
+    <div class="header">
+      <div class="left-container">
+        <div class="avatar">
+          <img class="avatar" src="../img/icon/avatar.png" alt="test" width="45">
+        </div>
+        <div class="header-title">
+          <h2>Redalpaca's Blog</h2>
+          <p>Hi👋, welcome to alpaca land.</p>
+        </div>
+      </div>
+      <div class="right-container">
+        <h3 class="link-github">GitHub</h3>
+        <h3 class="link-page">Page</h3>
+        <h3 class="link-alpaca">Alpaca</h3>
+      </div>
+      
+        
+    </div>
+
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <div class="crossnote markdown-preview  ">
+      <h1 class="crossnote-header" id="title">UL HARQ note</h1>
+      <h2 class="crossnote-header" id="questions">QUESTIONS：</h2>
+
+<p>在 uesim 侧，什么作为 HARQ info 的参照比较合适呢？</p>
+<h4 class="crossnote-header" id="uesim_checker-%E7%9A%84-harqinfo">uesim_checker 的 harqinfo</h4>
+
+<pre data-role="codeBlock" data-info="c++" class="language-cpp c++"><code><span class="token keyword keyword-typedef">typedef</span> <span class="token keyword keyword-struct">struct</span> <span class="token class-name">_HARQ_INFO_</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword keyword-uint32_t">uint32_t</span> mcs<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint16_t">uint16_t</span> rbSize<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>  numSym<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>  ndi<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>  rv<span class="token punctuation">;</span>
+    CrcState crc<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint16_t">uint16_t</span> sfn<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint16_t">uint16_t</span> slot<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>  nackCnt<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>  payLoad<span class="token punctuation">[</span>MIN_TB_SIZE<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> sHarqInfo<span class="token punctuation">,</span> <span class="token operator">*</span>PHarqInfo<span class="token punctuation">;</span> 
+</code></pre><h4 class="crossnote-header" id="l2-%E4%BE%A7%E7%9A%84-pharqprocinfo">l2 侧的 PHarqProcInfo</h4>
+
+<pre data-role="codeBlock" data-info="c++" class="language-cpp c++"><code><span class="token keyword keyword-typedef">typedef</span> <span class="token keyword keyword-struct">struct</span> <span class="token class-name">_HARQ_PROC_INFO_</span>
+<span class="token punctuation">{</span>
+    HarqState harqState         <span class="token operator">=</span> ACK<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>   retransCnt        <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>   ndi               <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint16_t">uint16_t</span>  idxInCellHarqList <span class="token operator">=</span> MAX_UL_HARQ_PROC_COUNT<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> sHarqProcInfo<span class="token punctuation">,</span> <span class="token operator">*</span>PHarqProcInfo<span class="token punctuation">;</span>
+
+<span class="token keyword keyword-typedef">typedef</span> <span class="token keyword keyword-struct">struct</span> <span class="token class-name">_HARQ_INFO_</span>
+<span class="token punctuation">{</span>
+    sHarqProcInfo procInfo<span class="token punctuation">[</span>MAX_UL_HARQ_NUM<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> sHarqInfo<span class="token punctuation">,</span> <span class="token operator">*</span>PHarqInfo<span class="token punctuation">;</span> 
+</code></pre><h4 class="crossnote-header" id="l2-%E4%BE%A7%E7%9A%84-pharqschedinfo">l2 侧的 PHarqSchedInfo</h4>
+
+<pre data-role="codeBlock" data-info="C++" class="language-cpp C++"><code><span class="token keyword keyword-typedef">typedef</span> <span class="token keyword keyword-struct">struct</span> <span class="token class-name">_HARQ_SCHED_INFO_</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword keyword-uint32_t">uint32_t</span>         tbSize<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint16_t">uint16_t</span>         ueIndex<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint16_t">uint16_t</span>         rbSize<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>          harqId<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>          lchId<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>          timeDomainIndex<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>          mcsIndex<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>          ndi<span class="token punctuation">;</span>
+    <span class="token keyword keyword-uint8_t">uint8_t</span>          rv<span class="token punctuation">;</span>
+    <span class="token keyword keyword-struct">struct</span> <span class="token class-name">rte_mbuf</span><span class="token operator">*</span> pTb<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> sHarqSchedInfo<span class="token punctuation">,</span> <span class="token operator">*</span>PHarqSchedInfo<span class="token punctuation">;</span>
+</code></pre><h2 class="crossnote-header" id="uesim-harq-%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B">uesim HARQ 相关消息处理流程</h2>
+
+<ul>
+<li>uesim_api_rx_proc_handle_queue 收取 L2 发来的消息</li>
+<li>Handle UL-DCI：
+<ul>
+<li>decode UL-DCI (treat as DCI format)</li>
+<li>把有效消息保存在 UEcontext -&gt; HARQ info 里 （对于同一个 UE 的同一次调度）</li>
+</ul>
+</li>
+<li>Handle UL-config：
+<ul>
+<li>CRC ind：先从 L2 发来的 CRC PDU 确认 UL 包有没有问题
+<ul>
+<li>若没问题，则 pass</li>
+<li>若有问题，则将 UL 包放入 HARQ buffer （到哪里去找这个包呢？还需要别的 buffer）</li>
+</ul>
+</li>
+<li>ULSCH tx：Fill ULSCH PDU -&gt; generate mac PDU
+<ul>
+<li>打包时，先查看 HARQ buffer 有无内容。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+    <div class="footer">
+      <div class="personal-info">
+        <p class="email">zhoualpaca@gmail.com</p>
+      </div>
+    </div>
+    <script src="../js/general.js"></script>
+  
+  </body></html>

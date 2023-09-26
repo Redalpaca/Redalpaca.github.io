@@ -1,20 +1,47 @@
 // test();
 
 /*
- * How to add an event listener to a element?  only by html and js function.
+ * the <script> label should be set on the bottom.
  */
 
 test();
 
+var html_md = "";
+
+
 function test() {
     // link_github = document.getElementsByClassName("link-github");
     link_github = document.querySelector(".link-github");
-    addLink2_text_element(link_github, "https://github.com/Redalpaca");
+    addLink_text_element(link_github, "https://github.com/Redalpaca");
     link_alpaca = document.querySelector(".link-alpaca");
-    addLink2_text_element(link_alpaca, "./img/icon/alpaca.jpg");
+    addLink_text_element(link_alpaca, "./img/icon/alpaca.jpg");
+    link_page = document.querySelector(".link-page");
+    addLink_text_element(link_page, "./index.html");
+    
+    link_blog_1 = document.querySelector("body > div.main > div > div > div:nth-child(1) > div.blog-content-wrapper > h3 > a");
+    // link_blog_1.href = "./blog/test.html";
+    // console.log(link_blog_1);
+
 }
 
-function addLink2_text_element(element, url) {
+function addMarkdown(element) {
+    element.addEventListener("click", function() {
+        var downloader = new Downloader();
+        var html_wrapper = downloader.download_parse_html_by_xhr(element.src_md);
+        var html_md = html_wrapper.querySelector(".markdown-preview");
+        console.log(html_md);
+    });
+}
+
+function addLink_change_cur(element, url) {
+    element.addEventListener('click', function() {
+        href_markdown_current = url;
+        window.location.href = url;
+        // url2clipboard(url_video);
+    });
+}
+
+function addLink_text_element(element, url) {
     element.addEventListener('click', function() {
         element.style.cursor = 'default';
         window.open(url);
@@ -35,6 +62,20 @@ function addLink2_text_element(element, url) {
 
 
 class Downloader {
+    download_parse_html_by_xhr(url, async = true) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, async);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var responseHTML = xhr.responseText;
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(responseHTML, 'text/html');
+            }
+        };
+        xhr.send(null);
+        return doc;
+    }
+    
     download_url_by_xhr(url, extention, title) {
         // request headers can not change 'Header'
         // does not fit Access-Control-Allow-Headers

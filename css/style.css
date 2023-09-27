@@ -113,7 +113,10 @@ html {
 
 body {
   background-image: url("../img/background/mountain_0_1.jpg");
-  /* background-image: url("../img/background/forest_0.jpg"); */
+  background-image: url("../img/background/forest_0.jpg");
+  background-image: url("../img/background/mountain_1.jpg");
+  background-image: url("../img/background/ocean_0.jpg");
+
   background-repeat: no-repeat;
   /* background-attachment: scroll; */
   background-attachment: fixed;

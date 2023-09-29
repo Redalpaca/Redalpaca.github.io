@@ -1,0 +1,160 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>Redalpaca's site</title>
+    <!-- <link rel="stylesheet" href="./css/style.css"> -->
+    <link rel="stylesheet" href="../css/markdown.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="shortcut icon" href="../img/icon/avatar.png" type="image/x-icon">
+    <style>
+
+    </style>
+    <script>
+      
+    </script>
+  </head>
+  <body for="html-export">
+    <!-- <script src="./js/general.js"></script> -->
+    <div class="header">
+      <div class="left-container">
+        <div class="avatar">
+          <img class="avatar" src="../img/icon/avatar.png" alt="test" width="45">
+        </div>
+        <div class="header-title">
+          <h2>Redalpaca's Blog</h2>
+          <p>Hi👋, welcome to alpaca land.</p>
+        </div>
+      </div>
+      <div class="right-container">
+        <h3 class="link-github">GitHub</h3>
+        <h3 class="link-page">Page</h3>
+        <h3 class="link-alpaca">Alpaca</h3>
+      </div>
+      
+        
+    </div>
+
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <body for="html-export">
+
+
+        <div class="crossnote markdown-preview">
+        <div><h1 class="crossnote-header" id="interesting-question-kill-odd-people" ebook-toc-level-1="" heading="Interesting Question: kill-odd-people">Interesting Question: kill-odd-people</h1>
+      
+      <p><strong>Code by Red alpaca at 2022.9</strong></p>
+      <hr>
+      <blockquote>
+      <p>Out of 600 people, if one person is randomly killed each time from odd-numbered positions, which number is the safest?</p>
+      </blockquote>
+      <p>Original question: <a href="https://www.zhihu.com/question/55445739">kill-odd-people by zhihu</a></p>
+      <p>The definition of "the safest person" can be: Process with the rule until only one number left, caculate the total probablity of the number survive, and we thought that the probability higher the person safer.</p>
+      <h2 class="crossnote-header" id="simulation-result" ebook-toc-level-2="" heading="Simulation result">Simulation result</h2>
+      
+      <p>
+        <img src="../img/blog/blog_3/blog_3_gif.gif" style=" 
+            display:block;
+            margin: 0 auto;
+        ">
+      </p>
+      <h2 class="crossnote-header" id="python-code" ebook-toc-level-2="" heading="Python code">Python code</h2>
+      
+      <h3 class="crossnote-header" id="drawer" ebook-toc-level-3="" heading="drawer:">drawer:</h3>
+      
+      <ul>
+      <li>Powered by matplotlib</li>
+      <li>Data process: if the curve has noise, denoising should be done before interpolation
+      <ul>
+      <li>smooting ( binomial / average )</li>
+      <li>interpolation ( linear )</li>
+      </ul>
+      </li>
+      </ul>
+      <pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token keyword keyword-def">def</span> <span class="token function">generateKill</span><span class="token punctuation">(</span>Size <span class="token operator">=</span> <span class="token number">100000</span><span class="token punctuation">,</span> Num <span class="token operator">=</span> <span class="token number">600</span><span class="token punctuation">,</span> Kill <span class="token operator">=</span> <span class="token number">599</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        M <span class="token operator">=</span> Kill            <span class="token comment"># How many person to kill</span>
+        Num <span class="token operator">=</span> Num           <span class="token comment"># Total number of people</span>
+        Size <span class="token operator">=</span> Size         <span class="token comment"># Total simulations</span>
+        Ar <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span> <span class="token keyword keyword-for">for</span> a <span class="token keyword keyword-in">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>Num<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        <span class="token keyword keyword-for">for</span> i <span class="token keyword keyword-in">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>Size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            a <span class="token operator">=</span> Test<span class="token punctuation">(</span>Num<span class="token punctuation">,</span>M<span class="token punctuation">)</span>
+            <span class="token keyword keyword-for">for</span> k <span class="token keyword keyword-in">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>Num<span class="token operator">-</span>M<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                Ar<span class="token punctuation">[</span>a<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> Ar<span class="token punctuation">[</span>a<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span> 
+        y_data <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword keyword-lambda">lambda</span> x<span class="token punctuation">:</span>x<span class="token operator">/</span>Size <span class="token punctuation">,</span>Ar<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        x_data <span class="token operator">=</span> <span class="token punctuation">[</span>i <span class="token keyword keyword-for">for</span> i <span class="token keyword keyword-in">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span>Num<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+      
+        <span class="token comment"># Smoothing the original data -&gt; to decrease the noise</span>
+        <span class="token comment"># With smoothing + interpolation, we are able to draw a smooth curve.</span>
+        <span class="token comment"># As the edge points are directly assigned in the shrinking binomial method, a slice method is needed for fine-tuning</span>
+        ys <span class="token operator">=</span> waveFilter_iterator<span class="token punctuation">(</span>smooth_average<span class="token punctuation">,</span> y_data<span class="token punctuation">,</span> <span class="token number">600</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+        ys <span class="token operator">=</span> smooth_average_slice<span class="token punctuation">(</span>ys<span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
+        ys <span class="token operator">=</span> ys<span class="token punctuation">[</span><span class="token punctuation">:</span>Num<span class="token punctuation">]</span> <span class="token comment"># to ensure the data length to be NUM</span>
+      
+        <span class="token comment"># Interpolation to generate multiple sampling points for smooth curve</span>
+        <span class="token comment"># Note: if the curve has noise, denoising should be done before interpolation</span>
+        model <span class="token operator">=</span> make_interp_spline<span class="token punctuation">(</span>x_data<span class="token punctuation">,</span> ys<span class="token punctuation">)</span>
+        xs <span class="token operator">=</span> np<span class="token punctuation">.</span>linspace<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">600</span><span class="token punctuation">,</span><span class="token number">24000</span><span class="token punctuation">)</span>
+        ys <span class="token operator">=</span> model<span class="token punctuation">(</span>xs<span class="token punctuation">)</span>
+      
+        ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>xs<span class="token punctuation">,</span>ys<span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"Total:%d , Kill:%d"</span><span class="token operator">%</span><span class="token punctuation">(</span>Num<span class="token punctuation">,</span>M<span class="token punctuation">)</span><span class="token punctuation">,</span>linewidth<span class="token operator">=</span><span class="token number">1.2</span><span class="token punctuation">)</span>
+        plt<span class="token punctuation">.</span>scatter<span class="token punctuation">(</span>x_data<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">600</span><span class="token punctuation">]</span><span class="token punctuation">,</span> y_data<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">600</span><span class="token punctuation">]</span><span class="token punctuation">,</span> c<span class="token operator">=</span> <span class="token string">'m'</span><span class="token punctuation">,</span> s<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+        plt<span class="token punctuation">.</span>legend<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">"Number"</span><span class="token punctuation">)</span>
+        plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">"Average Surviving precentage "</span><span class="token punctuation">)</span>
+        savePath <span class="token operator">=</span> <span class="token string">'./'</span> <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>Kill<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'.jpg'</span>
+        plt<span class="token punctuation">.</span>savefig<span class="token punctuation">(</span>savePath<span class="token punctuation">,</span> dpi <span class="token operator">=</span> <span class="token number">300</span><span class="token punctuation">)</span>
+      
+      <span class="token keyword keyword-def">def</span> <span class="token function">Test</span><span class="token punctuation">(</span>Num <span class="token operator">=</span> <span class="token number">600</span><span class="token punctuation">,</span> M <span class="token operator">=</span> <span class="token number">600</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        Origin <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span>Num<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        i <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword keyword-while">while</span> <span class="token builtin">len</span><span class="token punctuation">(</span>Origin<span class="token punctuation">)</span> <span class="token operator">&gt;</span> Num <span class="token operator">-</span> M<span class="token punctuation">:</span>
+            a <span class="token operator">=</span> rand<span class="token punctuation">.</span>randint<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span>Num<span class="token operator">-</span>i<span class="token punctuation">)</span>
+            <span class="token keyword keyword-if">if</span> a<span class="token operator">%</span><span class="token number">2</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+                Origin<span class="token punctuation">.</span>pop<span class="token punctuation">(</span>a<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+                i <span class="token operator">=</span> i<span class="token operator">+</span><span class="token number">1</span>
+        <span class="token keyword keyword-return">return</span> Origin
+      </code></pre><h3 class="crossnote-header" id="data-processor" ebook-toc-level-3="" heading="Data Processor:">Data Processor:</h3>
+      
+      <ul>
+      <li>Powered by scipy</li>
+      <li>Use binomial distribution as convolution kernel</li>
+      <li>As the influence of EDGE EFFECT, the edge of array require padding or decreasing the length of the kernel</li>
+      </ul>
+      <pre data-role="codeBlock" data-info="python" class="language-python python"><code><span class="token comment"># When the window_size is large, the errors generated at the edges are larger than the initial function,</span>
+      <span class="token comment"># especially when the slope of the curve tangent is large.</span>
+      <span class="token comment"># However, at the same time, it will also be smoother.</span>
+      <span class="token keyword keyword-def">def</span> <span class="token function">smooth_average_slice</span><span class="token punctuation">(</span>interval<span class="token punctuation">,</span> window_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword keyword-if">if</span> window_size <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            window_size <span class="token operator">+=</span> <span class="token number">1</span>
+        result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        p <span class="token operator">=</span> <span class="token number">0.5</span>
+        begin <span class="token operator">=</span> <span class="token number">0</span>
+        end <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>interval<span class="token punctuation">)</span>
+        width <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>window_size <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">)</span> 
+        n <span class="token operator">=</span> window_size
+        bino <span class="token operator">=</span> stats<span class="token punctuation">.</span>binom<span class="token punctuation">(</span>window_size<span class="token punctuation">,</span> p<span class="token punctuation">)</span>
+        <span class="token keyword keyword-for">for</span> index<span class="token punctuation">,</span> value <span class="token keyword keyword-in">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>interval<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            left <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>width<span class="token punctuation">,</span> index <span class="token operator">-</span> begin<span class="token punctuation">)</span>
+            right <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>width<span class="token punctuation">,</span> end <span class="token operator">-</span> index <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+            center <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token punctuation">(</span>n<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">*</span>p<span class="token punctuation">)</span>
+            x_range <span class="token operator">=</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span>center<span class="token operator">-</span>left<span class="token punctuation">,</span> center<span class="token operator">+</span>right<span class="token punctuation">)</span>
+            weights <span class="token operator">=</span> bino<span class="token punctuation">.</span>pmf<span class="token punctuation">(</span>x_range<span class="token punctuation">)</span>
+            value_avg <span class="token operator">=</span> np<span class="token punctuation">.</span>average<span class="token punctuation">(</span>interval<span class="token punctuation">[</span>index<span class="token operator">-</span>left <span class="token punctuation">:</span> index<span class="token operator">+</span>right<span class="token punctuation">]</span><span class="token punctuation">,</span> weights <span class="token operator">=</span> weights<span class="token punctuation">)</span>
+            result<span class="token punctuation">.</span>append<span class="token punctuation">(</span>value_avg<span class="token punctuation">)</span>
+        <span class="token keyword keyword-return">return</span> result
+      </code></pre></div>
+        </div>
+      
+      
+      </body>
+    <div class="footer">
+      <div class="personal-info">
+        <p class="email">zhoualpaca@gmail.com</p>
+      </div>
+    </div>
+    <script src="./js/general.js"></script>
+  
+  </body></html>

@@ -18,13 +18,14 @@ class Updater {
         xhr.open('GET', url, async);
         xhr.setRequestHeader('schemes', 'https');
         xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
+            if (xhr.status === 200) {
                 var responseHTML = xhr.responseText;
                 var parser = new DOMParser();
                 doc = parser.parseFromString(responseHTML, 'text/html');
             }
         };
         xhr.send(null);
+        console.log(doc);
         this.blogCards = doc.querySelectorAll(".blog-card");
         this.cnt_total = this.blogCards.length;
         return;

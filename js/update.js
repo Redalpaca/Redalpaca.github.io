@@ -22,12 +22,12 @@ class Updater {
                 var responseHTML = xhr.responseText;
                 var parser = new DOMParser();
                 doc = parser.parseFromString(responseHTML, 'text/html');
+                console.log(doc);
+                this.blogCards = doc.querySelectorAll(".blog-card");
+                this.cnt_total = this.blogCards.length;
             // }
         };
         xhr.send(null);
-        console.log(doc);
-        this.blogCards = doc.querySelectorAll(".blog-card");
-        this.cnt_total = this.blogCards.length;
         return;
     }
 

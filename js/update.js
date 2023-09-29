@@ -14,15 +14,15 @@ class Updater {
     __init__(path = "./model/LatestPost.html", async = true) {
         var url = path;
         var xhr = new XMLHttpRequest();
-        var doc;
+        var doc = "";
         xhr.open('GET', url, async);
         xhr.setRequestHeader('schemes', 'https');
-        xhr.onreadystatechange = function() {
-            if (xhr.status === 200) {
+        xhr.onreadystatechange = function(doc) {
+            // if (xhr.status === 200) {
                 var responseHTML = xhr.responseText;
                 var parser = new DOMParser();
                 doc = parser.parseFromString(responseHTML, 'text/html');
-            }
+            // }
         };
         xhr.send(null);
         console.log(doc);

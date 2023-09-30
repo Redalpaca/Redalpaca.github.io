@@ -35,6 +35,7 @@ class Updater {
                 console.log(doc);
                 this.blogCards = doc.querySelectorAll(".blog-card");
                 this.cnt_total = this.blogCards.length;
+                this.__init_blogCards_style__(this.blogCards); 
             }
         }.bind(this); 
         // bind the func 'onreadystatechange' to instance of the class, 
@@ -42,24 +43,11 @@ class Updater {
         xhr.send(null);
     }
 
-    // updateBlogCard() {
-    //     console.log("detect click");
-    //     if (this.cnt_cur + 3 >= this.cnt_total) {
-    //         for (let i = this.cnt_cur; i < this.cnt_total; i++) {
-    //             var blogCard = this.blogCards[i];
-    //             this.parent.append(blogCard);
-    //         }
-    //         this.handleBorder();
-    //         this.cnt_cur = this.cnt_total;
-    //         return;
-    //     }
-    //     for (let i = this.cnt_cur; i < this.cnt_cur + 3; i++) {
-    //         var blogCard = this.blogCards[i];
-    //         this.parent.append(blogCard);
-    //     }
-    //     this.cnt_cur += 3;
-    //     return;
-    // }
+    __init_blogCards_style__(blogCards) {
+        for(let i=3; i<blogCards.length; i++) {
+            blogCards[i].classList.add("hide");
+        }
+    }
 
     updateBlogCard() {
         console.log("detect click");
@@ -74,6 +62,10 @@ class Updater {
         for (let i = this.cnt_cur; i < cnt_next; i++) {
             var blogCard = this.blogCards[i];
             this.parent.insertBefore(blogCard, this.refer);
+            setTimeout(() => {
+                // this.blogCards[i].classList.add("show");
+                this.blogCards[i].classList.remove("hide");
+            }, 0);
         }
         this.cnt_cur = cnt_next;
     }
@@ -88,6 +80,7 @@ class Updater {
 
 
 var updater = new Updater();
+// blogCards = document.querySelectorAll(".blog-card");
 btn = document.querySelector(".btn-update");
 btn.onclick = function () {
         updater.updateBlogCard();

@@ -121,7 +121,7 @@ html {
   padding: 10px 20px;
   margin:auto;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   background-color:azure;
   color:black;
   border:none;
@@ -156,6 +156,7 @@ body {
 .main-container {
   height: auto;
   overflow: auto;
+
   /* background */
   background-repeat: no-repeat;
   background-attachment: scroll;
@@ -176,11 +177,13 @@ body {
 }
 
 .blog-index .element-index {
+  border-radius: 10px;
   /* padding-inline: 10px; */
-  margin-inline: 10px;
+  margin-inline: 5px;
   margin-top: 3px;
   margin-bottom: 3px;
-  padding-bottom: 3px;
+  padding-inline: 5px;
+  padding-bottom: 5px;
   /* border setting */
   /* border-bottom: 1px solid #7c7c7c; */
   /* border-width: 1px; */
@@ -188,11 +191,16 @@ body {
   display: flex;
   align-items: center;
   /* the element move up 1.5px while the mouse cursor gets on the index bar */
-  transition: transform 0.25s ease;
+  box-shadow: 1px 1px 0px hsla(0, 0%, 0%, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.2s ease-in-out;
 }
-
 .blog-index .element-index:hover {
-  transform: translateY(-1.5px);
+  transform: translateY(-2px);
+  box-shadow: 2px 3px 3px hsla(0, 0%, 0%, 0.1);
+  background-color: darker(var(--color-blog-index));
+}
+.element-index p:hover {
+  cursor: pointer;
 }
 
 .element-index .title-index {
@@ -203,6 +211,7 @@ body {
   background-color: var(--color-blog-background); 
   /* margin: 20px; */
   max-width: 750px;
+  padding-bottom: 200px;
   /* background-color: hsla(var(--dark-green), 0.9); */
   /* background-color: ; */
   float: left;
@@ -241,12 +250,24 @@ body {
   margin-inline: 10px;
   border-radius: 10px;
   box-shadow: 0 10px 10px hsla(0, 0%, 0%, 0.05);
-  transition: 0.25s ease;
+  transition: 0.5s ease;
+
+  /* opacity: 0;
+  transform: translateX(-50px); */
 }
 
 .blog-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: 0 10px 10px hsla(0, 0%, 0%, 0.1);
+}
+
+.blog-card.hide {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+.blog-card.show {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .blog-card-banner { display: none; }

@@ -115,6 +115,29 @@ html {
   #BLOG SECTION
 \*-----------------------------------*/
 
+.btn-update {
+  display:block;
+  border-radius: 100px;
+  padding: 10px 20px;
+  margin:auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color:azure;
+  color:black;
+  border:none;
+
+  /* transition smoothly while :ele change the form */
+  transition: 0.15s ease; 
+}
+
+.btn-update:hover {
+  background-color:rgb(204, 214, 255);
+}
+
+.btn-update:active {
+  background-color:rgb(73, 104, 197);
+}
+
 body {
   background-image: url("../img/background/mountain_0_1.jpg");
   /* background-image: url("../img/background/forest_0.jpg"); */

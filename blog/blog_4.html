@@ -1,0 +1,191 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>Redalpaca's site</title>
+    <!-- <link rel="stylesheet" href="./css/style.css"> -->
+    <link rel="stylesheet" href="../css/markdown.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="shortcut icon" href="../img/icon/avatar.png" type="image/x-icon">
+    
+    <script>
+      
+    </script>
+  </head>
+  <body for="html-export">
+    <!-- <script src="./js/general.js"></script> -->
+    <div class="header">
+      <div class="left-container">
+        <div class="avatar">
+          <img class="avatar" src="../img/icon/avatar.png" alt="test" width="45">
+        </div>
+        <div class="header-title">
+          <h2>Redalpaca's Blog</h2>
+          <p>Hi👋, welcome to alpaca land.</p>
+        </div>
+      </div>
+      <div class="right-container">
+        <h3 class="link-github">GitHub</h3>
+        <h3 class="link-page">Page</h3>
+        <h3 class="link-alpaca">Alpaca</h3>
+      </div>
+      
+        
+    </div>
+    <div class="crossnote markdown-preview">
+      <div><h1 class="crossnote-header" id="linux-process-tree---1" ebook-toc-level-1="" heading="Linux process tree - (1)">Linux process tree - (1)</h1>
+  
+  <h2 class="crossnote-header" id="result" ebook-toc-level-2="" heading="Result">Result</h2>
+  
+  <p> <img src="../img/blog/blog_4/blog_4_0.jpg" alt="procTree"> </p>
+  <h2 class="crossnote-header" id="python-ver" ebook-toc-level-2="" heading="Python ver">Python ver</h2>
+  
+  <h3 class="crossnote-header" id="data-structure" ebook-toc-level-3="" heading="Data Structure">Data Structure</h3>
+  
+  <p>With python, we do not have to care about the featrues of each OS and how they organize their process infomation. I care about how to create a tree and how to print the tree like command 'pstree'.</p>
+  <p>I chose a data structure like this:</p>
+  <pre data-role="codeBlock" data-info="" class="language-text text"><code>Node                               (level n)
+    ├──── Child ———— Child's brother (level n+1)
+    └──── Brother ———— ...           (level n) 
+  </code></pre><p>The data structure has two pointer(or reference): brother( Peer node ) / child( Child node ), and save a lot of spare space compare with create an array of process infomation.</p>
+  <p>Of cource I can create a <code>List</code> to save children, but <code>Brother</code> plays an important role in the program.</p>
+  <p>The class is like:</p>
+  <pre data-role="codeBlock" data-info="Python" class="language-python Python"><code><span class="token keyword keyword-class">class</span> <span class="token class-name">ProcessTreeNode</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token keyword keyword-def">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pid<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span> <span class="token punctuation">:</span>
+          self<span class="token punctuation">.</span>pid <span class="token operator">=</span> pid
+          self<span class="token punctuation">.</span>child <span class="token operator">=</span> <span class="token boolean">None</span>
+          self<span class="token punctuation">.</span>brother <span class="token operator">=</span> <span class="token boolean">None</span>
+          self<span class="token punctuation">.</span>visited <span class="token operator">=</span> <span class="token boolean">False</span>
+          
+          <span class="token comment"># Dynamically create instance member variable</span>
+          names <span class="token operator">=</span> self<span class="token punctuation">.</span>__dict__
+          <span class="token keyword keyword-for">for</span> key<span class="token punctuation">,</span> value <span class="token keyword keyword-in">in</span> kwargs<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+              names<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> value
+              
+      <span class="token keyword keyword-def">def</span> <span class="token function">addChild</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> child<span class="token punctuation">)</span><span class="token punctuation">:</span>
+          <span class="token keyword keyword-if">if</span> child<span class="token punctuation">.</span>pid <span class="token operator">==</span> self<span class="token punctuation">.</span>pid<span class="token punctuation">:</span>
+              <span class="token keyword keyword-return">return</span>
+          <span class="token keyword keyword-if">if</span> <span class="token keyword keyword-not">not</span> self<span class="token punctuation">.</span>child<span class="token punctuation">:</span>
+              self<span class="token punctuation">.</span>child <span class="token operator">=</span> child
+          <span class="token keyword keyword-else">else</span><span class="token punctuation">:</span>
+              child<span class="token punctuation">.</span>brother <span class="token operator">=</span> self<span class="token punctuation">.</span>child
+              self<span class="token punctuation">.</span>child <span class="token operator">=</span> child
+          <span class="token keyword keyword-return">return</span>
+      
+      <span class="token keyword keyword-def">def</span> <span class="token function">show</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+          <span class="token keyword keyword-for">for</span> key<span class="token punctuation">,</span> value <span class="token keyword keyword-in">in</span> self<span class="token punctuation">.</span>__dict__<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+              <span class="token keyword keyword-print">print</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> value<span class="token punctuation">)</span>
+      
+      <span class="token keyword keyword-def">def</span> <span class="token function">getInfo</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+          <span class="token keyword keyword-return">return</span> <span class="token string">'pid = '</span><span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>pid<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'  ppid = '</span> <span class="token operator">+</span> <span class="token builtin">str</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>ppid<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'  name = '</span> <span class="token operator">+</span> self<span class="token punctuation">.</span>name
+  </code></pre><h3 class="crossnote-header" id="tree-printer" ebook-toc-level-3="" heading="Tree Printer">Tree Printer</h3>
+  
+  <p>Assume we have created a porc tree like that, how do we print it out?</p>
+  <ul>
+  <li>If we don't need the "branch", we only need a parameter <code>depth</code>, indicating recursion depth.</li>
+  <li>If we want the tree be like "pstree", the relationship between nodes counts.</li>
+  </ul>
+  <p>The key is adding a parameter: prefix, and we are required to notice:</p>
+  <ul>
+  <li>current prefix is decided by current node's brother</li>
+  <li>current node never change parent prefix</li>
+  </ul>
+  <p>Here we have 4 signs:</p>
+  <ul>
+  <li><code>├────</code></li>
+  <li><code>└────</code></li>
+  <li><code>│     </code></li>
+  <li><code>    </code></li>
+  </ul>
+  <p>If current node has brother:</p>
+  <ul>
+  <li>we use <code>├────</code> as current prefix.</li>
+  <li>else we use <code>└────</code> as current prefix.</li>
+  <li>ATTENTION: prefix to print = param prefix + current prefix</li>
+  </ul>
+  <p>For its chidren, we add new infomation to prefix as param<br>
+  If current node has brother:</p>
+  <ul>
+  <li>we use <code>│     </code> as next prefix</li>
+  <li>else we use <code>    </code> as next prefix</li>
+  <li>ATTENTION: prefix to next param = param prefix + next prefix</li>
+  </ul>
+  <p>The function is like:</p>
+  <pre data-role="codeBlock" data-info="Python" class="language-python Python"><code><span class="token keyword keyword-def">def</span> <span class="token function">showProcTree</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">:</span> ProcessTreeNode<span class="token punctuation">,</span> depth<span class="token punctuation">,</span> prefix<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token keyword keyword-if">if</span> <span class="token keyword keyword-not">not</span> root<span class="token punctuation">:</span>
+          <span class="token keyword keyword-return">return</span>
+      prefix_branch <span class="token operator">=</span> <span class="token string">'├────'</span> <span class="token keyword keyword-if">if</span> root<span class="token punctuation">.</span>brother <span class="token keyword keyword-else">else</span> <span class="token string">'└────'</span>
+      prefix_next <span class="token operator">=</span> prefix <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token string">'│     '</span> <span class="token keyword keyword-if">if</span> root<span class="token punctuation">.</span>brother <span class="token keyword keyword-else">else</span> <span class="token string">'      '</span><span class="token punctuation">)</span>
+      <span class="token keyword keyword-if">if</span> <span class="token keyword keyword-not">not</span> depth<span class="token punctuation">:</span>
+          prefix_branch <span class="token operator">=</span> <span class="token string">'   '</span>
+      
+      <span class="token keyword keyword-print">print</span><span class="token punctuation">(</span>prefix <span class="token operator">+</span> prefix_branch <span class="token operator">+</span> root<span class="token punctuation">.</span>getInfo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      self<span class="token punctuation">.</span>showProcTree<span class="token punctuation">(</span>root<span class="token punctuation">.</span>child<span class="token punctuation">,</span> depth<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> prefix<span class="token operator">=</span> prefix_next<span class="token punctuation">)</span>
+      <span class="token keyword keyword-if">if</span> root<span class="token punctuation">.</span>child<span class="token punctuation">:</span>
+          child <span class="token operator">=</span> root<span class="token punctuation">.</span>child
+          <span class="token keyword keyword-while">while</span> child<span class="token punctuation">.</span>brother<span class="token punctuation">:</span>
+              self<span class="token punctuation">.</span>showProcTree<span class="token punctuation">(</span>child<span class="token punctuation">.</span>brother<span class="token punctuation">,</span> depth<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> prefix<span class="token operator">=</span> prefix_next<span class="token punctuation">)</span>
+              child <span class="token operator">=</span> child<span class="token punctuation">.</span>brother
+      <span class="token keyword keyword-return">return</span>
+  </code></pre><p>The whole Printer class is like:</p>
+  <pre data-role="codeBlock" data-info="Python" class="language-python Python"><code><span class="token keyword keyword-class">class</span> <span class="token class-name">ProcessPrinter</span><span class="token punctuation">:</span>
+      <span class="token keyword keyword-def">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+          self<span class="token punctuation">.</span>procHash <span class="token operator">=</span> self<span class="token punctuation">.</span>getProcHash<span class="token punctuation">(</span><span class="token punctuation">)</span>
+          self<span class="token punctuation">.</span>createProcTree<span class="token punctuation">(</span>self<span class="token punctuation">.</span>procHash<span class="token punctuation">)</span>
+      
+      <span class="token keyword keyword-def">def</span> <span class="token function">getProcHash</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+          pids <span class="token operator">=</span> psutil<span class="token punctuation">.</span>pids<span class="token punctuation">(</span><span class="token punctuation">)</span>
+          pidHash <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+          <span class="token keyword keyword-import">import</span> tqdm
+          pbar <span class="token operator">=</span> tqdm<span class="token punctuation">.</span>tqdm<span class="token punctuation">(</span>pids<span class="token punctuation">)</span>
+          pbar<span class="token punctuation">.</span>set_description<span class="token punctuation">(</span><span class="token string">'Loading procinfo'</span><span class="token punctuation">)</span>
+          <span class="token keyword keyword-for">for</span> pid <span class="token keyword keyword-in">in</span> pbar<span class="token punctuation">:</span>
+              <span class="token keyword keyword-try">try</span><span class="token punctuation">:</span>
+                  proc <span class="token operator">=</span> psutil<span class="token punctuation">.</span>Process<span class="token punctuation">(</span>pid<span class="token punctuation">)</span>
+                  pidHash<span class="token punctuation">[</span>pid<span class="token punctuation">]</span> <span class="token operator">=</span> ProcessTreeNode<span class="token punctuation">(</span>pid<span class="token punctuation">,</span> ppid <span class="token operator">=</span> proc<span class="token punctuation">.</span>ppid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> name <span class="token operator">=</span> proc<span class="token punctuation">.</span>name<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+              <span class="token keyword keyword-except">except</span><span class="token punctuation">:</span>
+                  <span class="token keyword keyword-pass">pass</span>
+          <span class="token keyword keyword-return">return</span> pidHash
+      
+      <span class="token keyword keyword-def">def</span> <span class="token function">createProcTree</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pidHash<span class="token punctuation">:</span> <span class="token builtin">dict</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+          <span class="token keyword keyword-for">for</span> pid<span class="token punctuation">,</span> proc <span class="token keyword keyword-in">in</span> pidHash<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+              <span class="token keyword keyword-if">if</span> proc<span class="token punctuation">.</span>ppid <span class="token keyword keyword-not">not</span> <span class="token keyword keyword-in">in</span> pidHash<span class="token punctuation">:</span>
+                  <span class="token keyword keyword-continue">continue</span>
+              parent <span class="token operator">=</span> pidHash<span class="token punctuation">[</span>proc<span class="token punctuation">.</span>ppid<span class="token punctuation">]</span>
+              parent<span class="token punctuation">:</span> ProcessTreeNode
+              parent<span class="token punctuation">.</span>addChild<span class="token punctuation">(</span>proc<span class="token punctuation">)</span>
+      
+      <span class="token keyword keyword-def">def</span> <span class="token function">showProcTree</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">:</span> ProcessTreeNode<span class="token punctuation">,</span> depth<span class="token punctuation">,</span> prefix<span class="token punctuation">)</span><span class="token punctuation">:</span>
+          <span class="token keyword keyword-if">if</span> <span class="token keyword keyword-not">not</span> root<span class="token punctuation">:</span>
+              <span class="token keyword keyword-return">return</span>
+          prefix_branch <span class="token operator">=</span> <span class="token string">'├────'</span> <span class="token keyword keyword-if">if</span> root<span class="token punctuation">.</span>brother <span class="token keyword keyword-else">else</span> <span class="token string">'└────'</span>
+          prefix_next <span class="token operator">=</span> prefix <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token string">'│     '</span> <span class="token keyword keyword-if">if</span> root<span class="token punctuation">.</span>brother <span class="token keyword keyword-else">else</span> <span class="token string">'      '</span><span class="token punctuation">)</span>
+          <span class="token keyword keyword-if">if</span> <span class="token keyword keyword-not">not</span> depth<span class="token punctuation">:</span>
+              prefix_branch <span class="token operator">=</span> <span class="token string">'   '</span>
+          
+          <span class="token keyword keyword-print">print</span><span class="token punctuation">(</span>prefix <span class="token operator">+</span> prefix_branch <span class="token operator">+</span> root<span class="token punctuation">.</span>getInfo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+          self<span class="token punctuation">.</span>showProcTree<span class="token punctuation">(</span>root<span class="token punctuation">.</span>child<span class="token punctuation">,</span> depth<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> prefix<span class="token operator">=</span> prefix_next<span class="token punctuation">)</span>
+          <span class="token keyword keyword-if">if</span> root<span class="token punctuation">.</span>child<span class="token punctuation">:</span>
+              child <span class="token operator">=</span> root<span class="token punctuation">.</span>child
+              <span class="token keyword keyword-while">while</span> child<span class="token punctuation">.</span>brother<span class="token punctuation">:</span>
+                  self<span class="token punctuation">.</span>showProcTree<span class="token punctuation">(</span>child<span class="token punctuation">.</span>brother<span class="token punctuation">,</span> depth<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> prefix<span class="token operator">=</span> prefix_next<span class="token punctuation">)</span>
+                  child <span class="token operator">=</span> child<span class="token punctuation">.</span>brother
+          <span class="token keyword keyword-return">return</span>
+      
+      <span class="token keyword keyword-def">def</span> <span class="token function">pstree</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pid<span class="token punctuation">)</span><span class="token punctuation">:</span>
+          self<span class="token punctuation">.</span>showProcTree<span class="token punctuation">(</span>self<span class="token punctuation">.</span>procHash<span class="token punctuation">[</span>pid<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span>
+  </code></pre></div>
+      </div>
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+
+    <div class="footer">
+      <div class="personal-info">
+        <p class="email">zhoualpaca@gmail.com</p>
+      </div>
+    </div>
+    <script src="./js/general.js"></script>
+  
+  </body></html>

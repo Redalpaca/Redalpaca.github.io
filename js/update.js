@@ -18,7 +18,7 @@ class Updater {
     __init__(path = "./model/LatestPost.html", async = true) {
         // initialize vars
         this.cnt_total = 3;
-        this.cnt_cur = 3; // no value?
+        this.cnt_cur = 0; // no value?
         this.blogCards = "";
         this.parent = document.querySelector(".blog");
         this.refer = document.querySelector(".ref-insert");
@@ -36,6 +36,7 @@ class Updater {
                 this.blogCards = doc.querySelectorAll(".blog-card");
                 this.cnt_total = this.blogCards.length;
                 this.__init_blogCards_style__(this.blogCards); 
+                btn.onclick();
             }
         }.bind(this); 
         // bind the func 'onreadystatechange' to instance of the class, 
@@ -85,7 +86,6 @@ btn = document.querySelector(".btn-update");
 btn.onclick = function () {
         updater.updateBlogCard();
     };
-
 
 
 

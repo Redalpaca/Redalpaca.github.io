@@ -192,10 +192,10 @@ body {
   align-items: center;
   /* the element move up 1.5px while the mouse cursor gets on the index bar */
   box-shadow: 1px 1px 0px hsla(0, 0%, 0%, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.2s ease-in-out;
+  transition: transform 0.25s ease-out, b5ox-shadow 0.2s ease-in-out;
 }
 .blog-index .element-index:hover {
-  transform: translateY(-2px);
+  transform: translate(10px, -1px);
   box-shadow: 2px 3px 3px hsla(0, 0%, 0%, 0.1);
   background-color: darker(var(--color-blog-index));
 }

@@ -1,18 +1,8 @@
 
 class Updater {
-    // cnt_total = 3;
-    // cnt_cur = 3;
-    // blogCards = "";
-    // parent = document.querySelector(".blog");
-    // btn = document.querySelector(".btn-update");
 
     constructor() {
         this.__init__();
-        
-        // this.btn = document.querySelector(".btn-update");
-        // this.btn.onclick = function () {
-        //     this.updateBlogCard;
-        // };
     }
 
     __init__(path = "./model/LatestPost.html", async = true) {
@@ -78,7 +68,6 @@ class Updater {
         btn.style.visibility = "hidden";
     }
 }
-
 
 var updater = new Updater();
 // blogCards = document.querySelectorAll(".blog-card");

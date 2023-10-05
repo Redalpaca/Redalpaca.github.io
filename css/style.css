@@ -3,7 +3,9 @@
   /* zrk note 这些变量名都要改, 到时候更换class就可以直接切换 */
   --color-blog-background: #26497755;
   --color-blog-index:#26497755;
+  --color-blog-index-hover:#5c8ccb52;
   /* --color-blog-card:#5b85bda5; */
+  --color-test: #77262655;
 
   --dark-green: #275c7b55; 
   --bright-green:#5b98c958;
@@ -139,12 +141,12 @@ html {
 }
 
 body {
-  background-image: url("../img/background/mountain_0_1.jpg");
+  /* background-image: url("../img/background/mountain_1.jpg"); */
   /* background-image: url("../img/background/forest_0.jpg"); */
   /* background-image: url("../img/background/mountain_1.jpg"); */
   background-image: url("../img/background/ocean_0.jpg");
   /* background-image: url("C:/Users/DELL/Desktop/图库暂存/alessio-soggetti-gdE-5Oui1Y0-unsplash.jpg"); */
-  background-image: url("../img/background/mountain_blue.jpg");
+  /* background-image: url("../img/background/mountain_blue.jpg"); */
 
   background-repeat: no-repeat;
   /* background-attachment: scroll; */
@@ -192,12 +194,12 @@ body {
   align-items: center;
   /* the element move up 1.5px while the mouse cursor gets on the index bar */
   box-shadow: 1px 1px 0px hsla(0, 0%, 0%, 0.1);
-  transition: transform 0.25s ease-out, b5ox-shadow 0.2s ease-in-out;
+  transition: transform 0.25s ease-out, b5ox-shadow 0.2s ease-in-out, background-color 0.2s ease;
 }
 .blog-index .element-index:hover {
   transform: translate(10px, -1px);
   box-shadow: 2px 3px 3px hsla(0, 0%, 0%, 0.1);
-  background-color: darker(var(--color-blog-index));
+  background-color: var(--color-blog-index-hover);
 }
 .element-index p:hover {
   cursor: pointer;
@@ -301,7 +303,10 @@ body {
 .blog-text,
 .profile-wrapper { display: none; }
 
-
+/* why this donot affect? */
+/* .blog-text::first-letter {
+  font-size: 200%;
+} */
 
 .blog .wrapper {
   display:         flex;
@@ -473,6 +478,10 @@ body {
     overflow: hidden;
     margin-bottom: 1rem;
   }
+
+  /* .blog-text::first-letter {
+    font-size: 200%;
+  } */
 
   .blog .wrapper-flex {
     display:         flex;

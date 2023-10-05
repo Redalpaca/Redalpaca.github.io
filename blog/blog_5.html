@@ -1,0 +1,301 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>Redalpaca's site</title>
+    <!-- <link rel="stylesheet" href="./css/style.css"> -->
+    <link rel="stylesheet" href="../css/markdown.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="shortcut icon" href="../img/icon/avatar.png" type="image/x-icon">
+    
+    <script>
+      
+    </script>
+  </head>
+  <body for="html-export">
+    <!-- <script src="./js/general.js"></script> -->
+    <div class="header">
+      <div class="left-container">
+        <div class="avatar">
+          <img class="avatar" src="../img/icon/avatar.png" alt="test" width="45">
+        </div>
+        <div class="header-title">
+          <h2>Redalpaca's Blog</h2>
+          <p>Hi👋, welcome to alpaca land.</p>
+        </div>
+      </div>
+      <div class="right-container">
+        <h3 class="link" id="link-github">
+          <a href="https://github.com/Redalpaca">Github</a>
+        </h3>
+        <h3 class="link" id="link-page">
+          <a href="../index.html">Page</a>
+        </h3>
+        <h3 class="link" id="link-alpaca">
+          <a href="../img/icon/alpaca.jpg">Alpaca</a>
+        </h3>
+      </div>
+      
+        
+    </div>
+    <div class="crossnote markdown-preview">
+      <div><h1 class="crossnote-header" id="linux-process-tree---2" ebook-toc-level-1="" heading="Linux process tree - (1)">Linux process tree - (2)</h1>
+  
+  <h2 class="crossnote-header" id="result" ebook-toc-level-2="" heading="Result">Result</h2>
+  
+  <p>
+    <img src="../img/blog/blog_5/blog_5_0.jpg" alt="alt">
+  </p>
+  <h2 class="crossnote-header" id="c--c-ver" ebook-toc-level-2="" heading="C / C++ ver">C / C++ ver</h2>
+  
+  <h3 class="crossnote-header" id="get-proc-info-on-linux" ebook-toc-level-3="" heading="Get proc info on Linux">Get proc info on Linux</h3>
+  
+  <p>On linux platform, process infomation is stored at <code>/proc/pid/stat</code>, we can read it as a file, which  achieves the unification of interfaces.</p>
+  <p>The infomation of porc is organized as (unfinished):</p>
+  <pre data-role="codeBlock" data-info="C" class="language-c C"><code><span class="token keyword keyword-typedef">typedef</span> <span class="token keyword keyword-struct">struct</span> <span class="token class-name">procInfo</span> <span class="token punctuation">{</span>
+      <span class="token keyword keyword-int">int</span>             pid<span class="token punctuation">;</span>                      <span class="token comment">/** The process id. **/</span>
+      <span class="token keyword keyword-char">char</span>            comm<span class="token punctuation">[</span>_POSIX_PATH_MAX<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">/** The filename of the executable **/</span>
+      <span class="token keyword keyword-char">char</span>            state<span class="token punctuation">;</span>                    <span class="token comment">/** R is running, S is sleeping, D is sleeping in an uninterruptible wait, Z is zombie, T is traced or stopped **/</span>			     
+      <span class="token keyword keyword-int">int</span>             ppid<span class="token punctuation">;</span>                     <span class="token comment">/** The pid of the parent. **/</span>
+      <span class="token keyword keyword-int">int</span>             pgrp<span class="token punctuation">;</span>                     <span class="token comment">/** The pgrp of the process. process group**/</span>
+      <span class="token keyword keyword-int">int</span>             session<span class="token punctuation">;</span>                  <span class="token comment">/** The session id of the process. **/</span>
+      <span class="token keyword keyword-int">int</span>             tty<span class="token punctuation">;</span>                      <span class="token comment">/** The tty the process uses **/</span>
+      <span class="token keyword keyword-int">int</span>             tpgid<span class="token punctuation">;</span>                    <span class="token comment">/** (too long) **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>	flags<span class="token punctuation">;</span>                    <span class="token comment">/** The flags of the process. **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>	minflt<span class="token punctuation">;</span>                   <span class="token comment">/** The number of minor faults **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>	cminflt<span class="token punctuation">;</span>                  <span class="token comment">/** The number of minor faults with childs **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>	majflt<span class="token punctuation">;</span>                   <span class="token comment">/** The number of major faults **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>    cmajflt<span class="token punctuation">;</span>                  <span class="token comment">/** The number of major faults with childs **/</span>
+      <span class="token keyword keyword-int">int</span>             utime<span class="token punctuation">;</span>                    <span class="token comment">/** user mode jiffies **/</span>
+      <span class="token keyword keyword-int">int</span>             stime<span class="token punctuation">;</span>                    <span class="token comment">/** kernel mode jiffies **/</span>
+      <span class="token keyword keyword-int">int</span>		        cutime<span class="token punctuation">;</span>                   <span class="token comment">/** user mode jiffies with childs **/</span>
+      <span class="token keyword keyword-int">int</span>             cstime<span class="token punctuation">;</span>                   <span class="token comment">/** kernel mode jiffies with childs **/</span>
+      <span class="token keyword keyword-int">int</span>             counter<span class="token punctuation">;</span>                  <span class="token comment">/** process's next timeslice **/</span>
+      <span class="token keyword keyword-int">int</span>             priority<span class="token punctuation">;</span>                 <span class="token comment">/** the standard nice value, plus fifteen **/</span>
+      <span class="token keyword keyword-int">int</span>             nice<span class="token punctuation">;</span>
+      <span class="token keyword keyword-int">int</span>             num_threads<span class="token punctuation">;</span>
+      <span class="token keyword keyword-int">int</span>             itrealvalue<span class="token punctuation">;</span>              <span class="token comment">/** The time before the next SIGALRM is sent to the process **/</span>
+      <span class="token keyword keyword-int">int</span>             starttime<span class="token punctuation">;</span>                <span class="token comment">/** Time the process started after system boot **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>    vsize<span class="token punctuation">;</span>                    <span class="token comment">/** Virtual memory size **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>    rss<span class="token punctuation">;</span>                      <span class="token comment">/** Resident Set Size **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>    rsslim<span class="token punctuation">;</span>                     <span class="token comment">/** Current limit in bytes on the rss **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>    startcode<span class="token punctuation">;</span>                <span class="token comment">/** The address above which program text can run **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>	endcode<span class="token punctuation">;</span>                  <span class="token comment">/** The address below which program text can run **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>    startstack<span class="token punctuation">;</span>               <span class="token comment">/** The address of the start of the stack **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>    kstkesp<span class="token punctuation">;</span>                  <span class="token comment">/** The current value of ESP **/</span>
+      <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span>    kstkeip<span class="token punctuation">;</span>                  <span class="token comment">/** The current value of EIP **/</span>
+      <span class="token keyword keyword-int">int</span>		        signal<span class="token punctuation">;</span>                       <span class="token comment">/** The bitmap of pending signals **/</span>
+      <span class="token keyword keyword-int">int</span>             blocked<span class="token punctuation">;</span>                  <span class="token comment">/** The bitmap of blocked signals **/</span>
+      <span class="token keyword keyword-int">int</span>             sigignore<span class="token punctuation">;</span>                <span class="token comment">/** The bitmap of ignored signals **/</span>
+      <span class="token keyword keyword-int">int</span>             sigcatch<span class="token punctuation">;</span>                 <span class="token comment">/** The bitmap of catched signals **/</span>
+      <span class="token comment">/** TODO **/</span> 
+  <span class="token punctuation">}</span> sProcInfo<span class="token punctuation">,</span> <span class="token operator">*</span>pProcInfo<span class="token punctuation">;</span>
+  </code></pre><p>Only catch some infomations for show, so the struct will be like:</p>
+  <pre data-role="codeBlock" data-info="C" class="language-c C"><code><span class="token keyword keyword-typedef">typedef</span> <span class="token keyword keyword-struct">struct</span> <span class="token class-name">ProcInfo</span>
+  <span class="token punctuation">{</span>
+      string name<span class="token punctuation">;</span>
+      <span class="token class-name">pid_t</span> pid<span class="token punctuation">;</span>
+      <span class="token class-name">pid_t</span> ppid<span class="token punctuation">;</span>
+      <span class="token class-name">size_t</span> virt<span class="token punctuation">;</span> 
+      <span class="token class-name">size_t</span> rss<span class="token punctuation">;</span> 
+  <span class="token punctuation">}</span> sProcInfo<span class="token punctuation">,</span> <span class="token operator">*</span>pProcInfo<span class="token punctuation">;</span>
+  </code></pre><p>The following function is to read <code>/proc/[PID]/stat</code></p>
+  <pre data-role="codeBlock" data-info="C++" class="language-cpp C++"><code>pProcTree <span class="token function">readProcStat</span><span class="token punctuation">(</span>string path<span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+      FILE <span class="token operator">*</span>fp<span class="token punctuation">;</span>
+      pProcTree pNode <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token function">ProcTree</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword keyword-if">if</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> MAX_PATH_LEN<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword keyword-return">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      fp <span class="token operator">=</span> <span class="token function">fopen</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">c_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+      <span class="token keyword keyword-char">char</span> temp<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token function">fscanf</span><span class="token punctuation">(</span>fp<span class="token punctuation">,</span> <span class="token string">"%d %s %*c %d %*d %*d %*d %*d %*u %*u \
+                  %*u %*u %*u %*u %*u %*d %*d %*d %*d %*d \
+                  %*d %*u %zu %zu %*u"</span><span class="token punctuation">,</span>
+              <span class="token operator">&amp;</span>pNode<span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>pid<span class="token punctuation">,</span> temp<span class="token punctuation">,</span> <span class="token operator">&amp;</span>pNode<span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>ppid<span class="token punctuation">,</span> <span class="token operator">&amp;</span>pNode<span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>virt<span class="token punctuation">,</span> <span class="token operator">&amp;</span>pNode<span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>rss<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      pNode<span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>name <span class="token operator">=</span> temp<span class="token punctuation">;</span>
+      pNode<span class="token operator">-&gt;</span>pid <span class="token operator">=</span> pNode<span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>pid<span class="token punctuation">;</span>
+      <span class="token comment">// cout &lt;&lt; temp ;</span>
+      <span class="token function">fclose</span><span class="token punctuation">(</span>fp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword keyword-return">return</span> pNode<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  </code></pre><h3 class="crossnote-header" id="create-proc-tree" ebook-toc-level-3="" heading="Create Proc Tree">Create Proc Tree</h3>
+  
+  <p>Set a <code>ProcTree</code> struct as wrapper, to carry procInfo and child / brother infomations.<br>
+  <code>struct ProcTree</code> represents a Node of a ProcTree, only deploying 2 simple method.<br>
+  Use head-insert to create brother link-list</p>
+  <p>The idea to create tree is easy:</p>
+  <ul>
+  <li>I initialize a hashmap for easyly finding a process by pid.</li>
+  <li>When create the tree, we iterate the process list, get each process, get its parent by <code>hashmap[ppid]</code>, a insert itself to the parent.</li>
+  </ul>
+  <pre data-role="codeBlock" data-info="C++" class="language-cpp C++"><code><span class="token keyword keyword-typedef">typedef</span> <span class="token keyword keyword-struct">struct</span> <span class="token class-name">ProcTree</span>
+  <span class="token punctuation">{</span>
+      pid_t pid<span class="token punctuation">;</span>
+      <span class="token keyword keyword-struct">struct</span> <span class="token class-name">ProcTree</span> <span class="token operator">*</span>child<span class="token punctuation">;</span>
+      <span class="token keyword keyword-struct">struct</span> <span class="token class-name">ProcTree</span> <span class="token operator">*</span>brother<span class="token punctuation">;</span>
+      <span class="token keyword keyword-bool">bool</span> visited <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+      sProcInfo procInfo<span class="token punctuation">;</span>
+  
+      <span class="token keyword keyword-void">void</span> <span class="token function">addChild</span><span class="token punctuation">(</span><span class="token keyword keyword-struct">struct</span> <span class="token class-name">ProcTree</span> <span class="token operator">*</span>pNode<span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>pNode<span class="token operator">-&gt;</span>pid <span class="token operator">==</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>pid<span class="token punctuation">)</span>
+              <span class="token keyword keyword-return">return</span><span class="token punctuation">;</span>
+          <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>child<span class="token punctuation">)</span>
+          <span class="token punctuation">{</span>
+              <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>child <span class="token operator">=</span> pNode<span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+          <span class="token keyword keyword-else">else</span>
+          <span class="token punctuation">{</span> <span class="token comment">// head insert</span>
+              pNode<span class="token operator">-&gt;</span>brother <span class="token operator">=</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>child<span class="token punctuation">;</span>
+              <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>child <span class="token operator">=</span> pNode<span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+  
+      <span class="token keyword keyword-void">void</span> <span class="token function">showInfo</span><span class="token punctuation">(</span>string prefix<span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          cout <span class="token operator">&lt;&lt;</span> prefix <span class="token operator">&lt;&lt;</span> <span class="token string">"pid="</span> <span class="token operator">&lt;&lt;</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>pid <span class="token operator">&lt;&lt;</span> <span class="token string">"\tppid="</span> <span class="token operator">&lt;&lt;</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>ppid <span class="token operator">&lt;&lt;</span> <span class="token string">"\tprogram="</span> <span class="token operator">&lt;&lt;</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>name <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword keyword-void">void</span> <span class="token function">showInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          cout <span class="token operator">&lt;&lt;</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>pid <span class="token operator">&lt;&lt;</span> <span class="token char">'\t'</span> <span class="token operator">&lt;&lt;</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>ppid <span class="token operator">&lt;&lt;</span> <span class="token char">'\t'</span> <span class="token operator">&lt;&lt;</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>name <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> sProcTree<span class="token punctuation">,</span> <span class="token operator">*</span>pProcTree<span class="token punctuation">;</span>
+  
+  </code></pre><br>
+  <h3 ebook-toc-level-3="" heading="Print Proc Tree">Print Proc Tree</h3>
+  <blockquote>
+  <p>As Article "Linux process tree (1)" said, the key is "brother"</p>
+  </blockquote>
+  <p>The current prefix depends on current root's brother.<br>
+  Print argument prefix + current prefix, their will be pretty "branches" shown.</p>
+  <p>Here's the whole printer class:</p>
+  <pre data-role="codeBlock" data-info="C++" class="language-cpp C++"><code><span class="token keyword keyword-class">class</span> <span class="token class-name">ProcPrinter</span>
+  <span class="token punctuation">{</span>
+  <span class="token keyword keyword-public">public</span><span class="token operator">:</span>
+      map<span class="token operator">&lt;</span>pid_t<span class="token punctuation">,</span> pProcTree<span class="token operator">&gt;</span> procMap<span class="token punctuation">;</span>
+      vector<span class="token operator">&lt;</span>pProcTree<span class="token operator">&gt;</span> procList<span class="token punctuation">;</span>
+      <span class="token function">ProcPrinter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span><span class="token function">__init_procList__</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span><span class="token function">__init_procMap__</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span><span class="token function">__create_procTree__</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  
+      <span class="token operator">~</span><span class="token function">ProcPrinter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          <span class="token comment">// todo</span>
+      <span class="token punctuation">}</span>
+  
+      <span class="token keyword keyword-void">void</span> <span class="token function">show</span><span class="token punctuation">(</span>pid_t pid<span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          string prefix <span class="token operator">=</span> <span class="token string">" "</span><span class="token punctuation">;</span>
+          <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span><span class="token function">__print_procTree__</span><span class="token punctuation">(</span><span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procMap<span class="token punctuation">[</span>pid<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> prefix<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword keyword-void">void</span> <span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          string prefix <span class="token operator">=</span> <span class="token string">" "</span><span class="token punctuation">;</span>
+          <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span><span class="token function">__print_procTree__</span><span class="token punctuation">(</span><span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procMap<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> prefix<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  
+  <span class="token keyword keyword-private">private</span><span class="token operator">:</span>
+      <span class="token keyword keyword-void">void</span> <span class="token function">__init_procList__</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          <span class="token keyword keyword-struct">struct</span> <span class="token class-name">dirent</span> <span class="token operator">*</span>entry<span class="token punctuation">;</span>
+          DIR <span class="token operator">*</span>procdir<span class="token punctuation">;</span>
+          procdir <span class="token operator">=</span> <span class="token function">opendir</span><span class="token punctuation">(</span><span class="token string">"/proc"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword keyword-char">char</span> path<span class="token punctuation">[</span>MAX_PATH_LEN<span class="token punctuation">]</span><span class="token punctuation">;</span>
+          <span class="token keyword keyword-while">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>entry <span class="token operator">=</span> <span class="token function">readdir</span><span class="token punctuation">(</span>procdir<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+          <span class="token punctuation">{</span>
+              <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">is_pid</span><span class="token punctuation">(</span>entry<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                  <span class="token keyword keyword-continue">continue</span><span class="token punctuation">;</span>
+              <span class="token function">snprintf</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span> <span class="token keyword keyword-sizeof">sizeof</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"/proc/%s/stat"</span><span class="token punctuation">,</span> entry<span class="token operator">-&gt;</span>d_name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+              string path_str <span class="token operator">=</span> path<span class="token punctuation">;</span>
+              pProcTree pNode <span class="token operator">=</span> <span class="token function">readProcStat</span><span class="token punctuation">(</span>path_str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procList<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>pNode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+  
+      <span class="token keyword keyword-void">void</span> <span class="token function">__init_procMap__</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          <span class="token keyword keyword-for">for</span> <span class="token punctuation">(</span><span class="token keyword keyword-auto">auto</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procList<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+          <span class="token punctuation">{</span>
+              pProcTree pNode <span class="token operator">=</span> procList<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+              <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procMap<span class="token punctuation">[</span>pNode<span class="token operator">-&gt;</span>pid<span class="token punctuation">]</span> <span class="token operator">=</span> pNode<span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+  
+      <span class="token keyword keyword-void">void</span> <span class="token function">__create_procTree__</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          <span class="token keyword keyword-for">for</span> <span class="token punctuation">(</span>map<span class="token operator">&lt;</span>pid_t<span class="token punctuation">,</span> pProcTree<span class="token operator">&gt;</span><span class="token double-colon punctuation">::</span>iterator it <span class="token operator">=</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procMap<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it <span class="token operator">!=</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procMap<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it<span class="token operator">++</span><span class="token punctuation">)</span>
+          <span class="token punctuation">{</span>
+              pid_t pid <span class="token operator">=</span> it<span class="token operator">-&gt;</span>first<span class="token punctuation">;</span>
+              pProcTree pNode <span class="token operator">=</span> it<span class="token operator">-&gt;</span>second<span class="token punctuation">;</span>
+              <span class="token comment">// if(! this-&gt;procMap.find(pNode-&gt;procInfo.ppid)) {</span>
+              <span class="token comment">//     continue;</span>
+              <span class="token comment">// }</span>
+              pProcTree parent <span class="token operator">=</span> <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>procMap<span class="token punctuation">[</span>pNode<span class="token operator">-&gt;</span>procInfo<span class="token punctuation">.</span>ppid<span class="token punctuation">]</span><span class="token punctuation">;</span>
+              <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>parent<span class="token punctuation">)</span>
+              <span class="token punctuation">{</span>
+                  parent<span class="token operator">-&gt;</span><span class="token function">addChild</span><span class="token punctuation">(</span>pNode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+  
+      <span class="token keyword keyword-void">void</span> <span class="token function">__print_procTree__</span><span class="token punctuation">(</span>pProcTree root<span class="token punctuation">,</span> <span class="token keyword keyword-int">int</span> depth<span class="token punctuation">,</span> string prefix<span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>root<span class="token punctuation">)</span>
+          <span class="token punctuation">{</span>
+              <span class="token keyword keyword-return">return</span><span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+          string prefix_cur <span class="token operator">=</span> prefix <span class="token operator">+</span> <span class="token punctuation">(</span>root<span class="token operator">-&gt;</span>brother <span class="token operator">?</span> <span class="token string">"├────"</span> <span class="token operator">:</span> <span class="token string">"└────"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          string prefix_next <span class="token operator">=</span> prefix <span class="token operator">+</span> <span class="token punctuation">(</span>root<span class="token operator">-&gt;</span>brother <span class="token operator">?</span> <span class="token string">"│     "</span> <span class="token operator">:</span> <span class="token string">"      "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>depth<span class="token punctuation">)</span>
+          <span class="token punctuation">{</span>
+              prefix_cur <span class="token operator">=</span> prefix<span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+          root<span class="token operator">-&gt;</span><span class="token function">showInfo</span><span class="token punctuation">(</span>prefix_cur<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token comment">// recursion</span>
+          <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span><span class="token function">__print_procTree__</span><span class="token punctuation">(</span>root<span class="token operator">-&gt;</span>child<span class="token punctuation">,</span> depth <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> prefix_next<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>root<span class="token operator">-&gt;</span>child<span class="token punctuation">)</span>
+          <span class="token punctuation">{</span>
+              pProcTree child <span class="token operator">=</span> root<span class="token operator">-&gt;</span>child<span class="token punctuation">;</span>
+              <span class="token keyword keyword-while">while</span> <span class="token punctuation">(</span>child<span class="token operator">-&gt;</span>brother<span class="token punctuation">)</span>
+              <span class="token punctuation">{</span>
+                  <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span><span class="token function">__print_procTree__</span><span class="token punctuation">(</span>child<span class="token operator">-&gt;</span>brother<span class="token punctuation">,</span> depth <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> prefix_next<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                  child <span class="token operator">=</span> child<span class="token operator">-&gt;</span>brother<span class="token punctuation">;</span>
+              <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  </code></pre><h3 ebook-toc-level-3="" heading="Main">Main</h3>
+  <pre data-role="codeBlock" data-info="C++" class="language-cpp C++"><code><span class="token keyword keyword-int">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword keyword-int">int</span> argc<span class="token punctuation">,</span> <span class="token keyword keyword-char">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+      ProcPrinter <span class="token operator">*</span>procPrinter <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token function">ProcPrinter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>argc <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+      <span class="token punctuation">{</span>
+          cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Require argument: process ID"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword keyword-else">else</span>
+      <span class="token punctuation">{</span>
+          pid_t pid <span class="token operator">=</span> <span class="token function">atoi</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          procPrinter<span class="token operator">-&gt;</span><span class="token function">show</span><span class="token punctuation">(</span>pid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword keyword-return">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  </code></pre></div>
+      </div>
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+    <!-- Here is the markdown content -->
+
+    <div class="footer">
+      <div class="personal-info">
+        <p class="email">zhoualpaca@gmail.com</p>
+      </div>
+    </div>
+    <script src="./js/general.js"></script>
+  
+  </body></html>

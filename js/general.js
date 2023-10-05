@@ -4,10 +4,9 @@
  * the <script> label should be set on the bottom.
  */
 
-test();
+// test();
 
 var html_md = "";
-
 
 function test() {
     // link_github = document.getElementsByClassName("link-github");
@@ -17,11 +16,6 @@ function test() {
     addLink_text_element(link_alpaca, "./img/icon/alpaca.jpg");
     link_page = document.querySelector(".link-page");
     addLink_text_element(link_page, "./index.html");
-    
-    link_blog_1 = document.querySelector("body > div.main > div > div > div:nth-child(1) > div.blog-content-wrapper > h3 > a");
-    // link_blog_1.href = "./blog/test.html";
-    // console.log(link_blog_1);
-
 }
 
 function addMarkdown(element) {
@@ -59,7 +53,6 @@ function addLink_text_element(element, url) {
         element.style.textDecoration = '';
     });
 }
-
 
 class Downloader {
     download_parse_html_by_xhr(url, async = true) {

@@ -27,13 +27,34 @@
     padding-right: 20px;
   }
   
+  /* right container */
   .header .right-container {
     display: flex;
     align-items: center;
     float: right;
   }
+
+  
+
   
   .header .right-container > * {
     float: right;
     padding-right: 25px;
   }
+
+  /* Why this cannot make sense */
+  /* .header .right-container > *:hover {
+    -webkit-text-fill-color: #0084ff;
+    cursor: pointer;
+    text-decoration: underline;
+  } */
+  .header .right-container >.link > a {
+    -webkit-text-fill-color: #000000;
+  }
+
+  .header .right-container >.link > a:hover {
+    -webkit-text-fill-color: #0084ff;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  

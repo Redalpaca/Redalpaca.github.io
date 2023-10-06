@@ -134,10 +134,12 @@ html {
 
 .btn-update:hover {
   background-color:rgb(204, 214, 255);
+  cursor: pointer;
 }
 
 .btn-update:active {
   background-color:rgb(73, 104, 197);
+  cursor: default;
 }
 
 body {
@@ -200,6 +202,10 @@ body {
   transform: translate(10px, -1px);
   box-shadow: 2px 3px 3px hsla(0, 0%, 0%, 0.1);
   background-color: var(--color-blog-index-hover);
+}
+
+.element-index a{
+  -webkit-text-fill-color: black;
 }
 .element-index p:hover {
   cursor: pointer;

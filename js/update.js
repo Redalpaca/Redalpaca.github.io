@@ -69,14 +69,50 @@ class Updater {
     }
 }
 
+class Updater_Index
+{
+    constructor() {
+        this.__init__();
+    }
+
+    __init__(path = "./model/LatestIndex.html", async = true) {
+        // initialize vars
+        this.parent = document.querySelector(".container-index");
+        // get outer html
+        var url = path;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, async);
+        xhr.onreadystatechange = function (doc) {
+            if (xhr.readyState === 4) {
+                var responseHTML = xhr.responseText;
+                var parser = new DOMParser();
+                doc = parser.parseFromString(responseHTML, 'text/html');
+                this.blogIndex = doc.querySelectorAll(".element-index");
+
+                // update
+                this.updateBlogIndex();
+            }
+        }.bind(this); 
+        // bind the func 'onreadystatechange' to instance of the class, 
+        // so 'this' with point to 'updater', not the caller. 
+        xhr.send(null);
+    }
+
+    updateBlogIndex() {
+        for(let i=0; i<this.blogIndex.length; i++) {
+            this.parent.append(this.blogIndex[i])
+        }
+    }
+
+}
+
 var updater = new Updater();
-// blogCards = document.querySelectorAll(".blog-card");
 btn = document.querySelector(".btn-update");
 btn.onclick = function () {
         updater.updateBlogCard();
     };
 
-
+var updater_index = new Updater_Index();
 
 
 

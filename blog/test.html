@@ -10,10 +10,15 @@
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/footer.css">
     <link rel="shortcut icon" href="../img/icon/avatar.png" type="image/x-icon">
-    <!-- <style>
-      /* Here is the code highlight css */
-    </style> -->
+
     <style>
+      body {
+        margin: 0;
+      }
+      html body a {
+        text-decoration: none;
+      }
+
       .markdown-body {
         box-sizing: border-box;
         min-width: 200px;
@@ -45,262 +50,146 @@
         </div>
       </div>
       <div class="right-container">
-        <h3 class="link-github">GitHub</h3>
-        <h3 class="link-page">Page</h3>
-        <h3 class="link-alpaca">Alpaca</h3>
+        <h3 class="link" id="link-github">
+          <a href="https://github.com/Redalpaca">Github</a>
+        </h3>
+        <h3 class="link" id="link-page">
+          <a href="./index.html">Page</a>
+        </h3>
+        <h3 class="link" id="link-alpaca">
+          <a href="./img/icon/alpaca.jpg">Alpaca</a>
+        </h3>
       </div>
       
         
     </div>
     <!-- markdown to html content label -->
     <div class="markdown-body">
-      <h1 id="linux-process-tree-2">Linux process tree - (2)</h1>
-<h2 id="result">Result</h2>
-<p><img alt="al" src="/Redalpaca_Blog/img/blog/blog_5/blog_5_0.jpg" /></p>
-<h2 id="c-c-ver">C / C++ ver</h2>
-<h3 id="get-proc-info-on-linux">Get proc info on Linux</h3>
-<p>On linux platform, process infomation is stored at <code>/proc/pid/stat</code>, we can read it as a file, which  achieves the unification of interfaces. </p>
-<p>The infomation of porc is organized as (unfinished):  </p>
-<div class="codehilite"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">procInfo</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">pid</span><span class="p">;</span><span class="w">                      </span><span class="cm">/** The process id. **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">char</span><span class="w">            </span><span class="n">comm</span><span class="p">[</span><span class="n">_POSIX_PATH_MAX</span><span class="p">];</span><span class="w"> </span><span class="cm">/** The filename of the executable **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">char</span><span class="w">            </span><span class="n">state</span><span class="p">;</span><span class="w">                    </span><span class="cm">/** R is running, S is sleeping, D is sleeping in an uninterruptible wait, Z is zombie, T is traced or stopped **/</span><span class="w">                 </span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">ppid</span><span class="p">;</span><span class="w">                     </span><span class="cm">/** The pid of the parent. **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">pgrp</span><span class="p">;</span><span class="w">                     </span><span class="cm">/** The pgrp of the process. process group**/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">session</span><span class="p">;</span><span class="w">                  </span><span class="cm">/** The session id of the process. **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">tty</span><span class="p">;</span><span class="w">                      </span><span class="cm">/** The tty the process uses **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">tpgid</span><span class="p">;</span><span class="w">                    </span><span class="cm">/** (too long) **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">flags</span><span class="p">;</span><span class="w">                    </span><span class="cm">/** The flags of the process. **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">minflt</span><span class="p">;</span><span class="w">                   </span><span class="cm">/** The number of minor faults **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">cminflt</span><span class="p">;</span><span class="w">                  </span><span class="cm">/** The number of minor faults with childs **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">majflt</span><span class="p">;</span><span class="w">                   </span><span class="cm">/** The number of major faults **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">cmajflt</span><span class="p">;</span><span class="w">                  </span><span class="cm">/** The number of major faults with childs **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">utime</span><span class="p">;</span><span class="w">                    </span><span class="cm">/** user mode jiffies **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">stime</span><span class="p">;</span><span class="w">                    </span><span class="cm">/** kernel mode jiffies **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">cutime</span><span class="p">;</span><span class="w">                   </span><span class="cm">/** user mode jiffies with childs **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">cstime</span><span class="p">;</span><span class="w">                   </span><span class="cm">/** kernel mode jiffies with childs **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">counter</span><span class="p">;</span><span class="w">                  </span><span class="cm">/** process&#39;s next timeslice **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">priority</span><span class="p">;</span><span class="w">                 </span><span class="cm">/** the standard nice value, plus fifteen **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">nice</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">num_threads</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">itrealvalue</span><span class="p">;</span><span class="w">              </span><span class="cm">/** The time before the next SIGALRM is sent to the process **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">starttime</span><span class="p">;</span><span class="w">                </span><span class="cm">/** Time the process started after system boot **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">vsize</span><span class="p">;</span><span class="w">                    </span><span class="cm">/** Virtual memory size **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">rss</span><span class="p">;</span><span class="w">                      </span><span class="cm">/** Resident Set Size **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">rsslim</span><span class="p">;</span><span class="w">                     </span><span class="cm">/** Current limit in bytes on the rss **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">startcode</span><span class="p">;</span><span class="w">                </span><span class="cm">/** The address above which program text can run **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">endcode</span><span class="p">;</span><span class="w">                  </span><span class="cm">/** The address below which program text can run **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">startstack</span><span class="p">;</span><span class="w">               </span><span class="cm">/** The address of the start of the stack **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">kstkesp</span><span class="p">;</span><span class="w">                  </span><span class="cm">/** The current value of ESP **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="n">kstkeip</span><span class="p">;</span><span class="w">                  </span><span class="cm">/** The current value of EIP **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">signal</span><span class="p">;</span><span class="w">                       </span><span class="cm">/** The bitmap of pending signals **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">blocked</span><span class="p">;</span><span class="w">                  </span><span class="cm">/** The bitmap of blocked signals **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">sigignore</span><span class="p">;</span><span class="w">                </span><span class="cm">/** The bitmap of ignored signals **/</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w">             </span><span class="n">sigcatch</span><span class="p">;</span><span class="w">                 </span><span class="cm">/** The bitmap of catched signals **/</span><span class="w"></span>
-<span class="w">    </span><span class="cm">/** TODO **/</span><span class="w"> </span>
-<span class="p">}</span><span class="w"> </span><span class="n">sProcInfo</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">pProcInfo</span><span class="p">;</span><span class="w"></span>
-</code></pre></div>
-
-<p>Only catch some infomations for show, so the struct will be like:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ProcInfo</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">ppid</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">virt</span><span class="p">;</span><span class="w"> </span>
-<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">rss</span><span class="p">;</span><span class="w"> </span>
-<span class="p">}</span><span class="w"> </span><span class="n">sProcInfo</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">pProcInfo</span><span class="p">;</span><span class="w"></span>
-</code></pre></div>
-
-<p>The following function is to read <code>/proc/[PID]/stat</code> </p>
-<div class="codehilite"><pre><span></span><code><span class="n">pProcTree</span><span class="w"> </span><span class="nf">readProcStat</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">path</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">pProcTree</span><span class="w"> </span><span class="n">pNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ProcTree</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">path</span><span class="p">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">MAX_PATH_LEN</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">path</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">temp</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span><span class="w"></span>
-<span class="w">    </span><span class="n">fscanf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%d %s %*c %d %*d %*d %*d %*d %*u %*u \</span>
-<span class="s">                %*u %*u %*u %*u %*u %*d %*d %*d %*d %*d \</span>
-<span class="s">                %*d %*u %zu %zu %*u&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="o">&amp;</span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">temp</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">ppid</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">virt</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">rss</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">pid</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="c1">// cout &lt;&lt; temp ;</span>
-<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pNode</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
-
-<h3 id="create-proc-tree">Create Proc Tree</h3>
-<p>Set a <code>ProcTree</code> struct as wrapper, to carry procInfo and child / brother infomations.<br />
-<code>struct ProcTree</code> represents a Node of a ProcTree, only deploying 2 simple method.<br />
-Use head-insert to create brother link-list</p>
-<p>The idea to create tree is easy:<br />
-- I initialize a hashmap for easyly finding a process by pid.<br />
-- When create the tree, we iterate the process list, get each process, get its parent by <code>hashmap[ppid]</code>, a insert itself to the parent. </p>
-<div class="codehilite"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ProcTree</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">ProcTree</span><span class="w"> </span><span class="o">*</span><span class="n">child</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">ProcTree</span><span class="w"> </span><span class="o">*</span><span class="n">brother</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">visited</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">sProcInfo</span><span class="w"> </span><span class="n">procInfo</span><span class="p">;</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">addChild</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">ProcTree</span><span class="w"> </span><span class="o">*</span><span class="n">pNode</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">pid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">child</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">child</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pNode</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="k">else</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="c1">// head insert</span>
-<span class="w">            </span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">brother</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">child</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">child</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pNode</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">showInfo</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">prefix</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">prefix</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;pid=&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">	</span><span class="s">ppid=&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">ppid</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">	</span><span class="s">program=&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">showInfo</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;	&#39;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">ppid</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;	&#39;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"> </span><span class="n">sProcTree</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">pProcTree</span><span class="p">;</span><span class="w"></span>
-</code></pre></div>
-
-<p><br></p>
-<h3 id="print-proc-tree">Print Proc Tree</h3>
+      <h1 id="markdown-to-html-tutorial">Markdown to html tutorial</h1>
+<h2 id="method-by-python">Method by Python</h2>
 <blockquote>
-<p>As Article &ldquo;Linux process tree (1)&rdquo; said, the key is &ldquo;brother&rdquo;</p>
+<p>We can do that by &lsquo;onekey&rsquo;</p>
 </blockquote>
-<p>The current prefix depends on current root&rsquo;s brother. <br />
-Print argument prefix + current prefix, their will be pretty &ldquo;branches&rdquo; shown.</p>
-<p>Here&rsquo;s the whole printer class:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ProcPrinter</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="w">    </span><span class="n">map</span><span class="o">&lt;</span><span class="kt">pid_t</span><span class="p">,</span><span class="w"> </span><span class="n">pProcTree</span><span class="o">&gt;</span><span class="w"> </span><span class="n">procMap</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">pProcTree</span><span class="o">&gt;</span><span class="w"> </span><span class="n">procList</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">ProcPrinter</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">__init_procList__</span><span class="p">();</span><span class="w"></span>
-<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">__init_procMap__</span><span class="p">();</span><span class="w"></span>
-<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">__create_procTree__</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-
-<span class="w">    </span><span class="o">~</span><span class="n">ProcPrinter</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="c1">// todo</span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">show</span><span class="p">(</span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">__print_procTree__</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procMap</span><span class="p">[</span><span class="n">pid</span><span class="p">],</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">prefix</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">show</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">__print_procTree__</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procMap</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">prefix</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-
-<span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">__init_procList__</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"> </span><span class="o">*</span><span class="n">entry</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="n">procdir</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="n">procdir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opendir</span><span class="p">(</span><span class="s">&quot;/proc&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="n">MAX_PATH_LEN</span><span class="p">];</span><span class="w"></span>
-<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">entry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdir</span><span class="p">(</span><span class="n">procdir</span><span class="p">)))</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">is_pid</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span><span class="w"></span>
-<span class="w">                </span><span class="k">continue</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">snprintf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/proc/%s/stat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="n">string</span><span class="w"> </span><span class="n">path_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">path</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">pProcTree</span><span class="w"> </span><span class="n">pNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readProcStat</span><span class="p">(</span><span class="n">path_str</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procList</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">pNode</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">__init_procMap__</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procList</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">pProcTree</span><span class="w"> </span><span class="n">pNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">procList</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
-<span class="w">            </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procMap</span><span class="p">[</span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pNode</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">__create_procTree__</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">pid_t</span><span class="p">,</span><span class="w"> </span><span class="n">pProcTree</span><span class="o">&gt;::</span><span class="n">iterator</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procMap</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procMap</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="n">it</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">pProcTree</span><span class="w"> </span><span class="n">pNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="c1">// if(! this-&gt;procMap.find(pNode-&gt;procInfo.ppid)) {</span>
-<span class="w">            </span><span class="c1">//     continue;</span>
-<span class="w">            </span><span class="c1">// }</span>
-<span class="w">            </span><span class="n">pProcTree</span><span class="w"> </span><span class="n">parent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">procMap</span><span class="p">[</span><span class="n">pNode</span><span class="o">-&gt;</span><span class="n">procInfo</span><span class="p">.</span><span class="n">ppid</span><span class="p">];</span><span class="w"></span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="p">{</span><span class="w"></span>
-<span class="w">                </span><span class="n">parent</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">pNode</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">__print_procTree__</span><span class="p">(</span><span class="n">pProcTree</span><span class="w"> </span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">depth</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="n">prefix</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">root</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">prefix_cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">brother</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;├────&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;└────&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">prefix_next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">brother</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;│     &quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;      &quot;</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">depth</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">prefix_cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="n">root</span><span class="o">-&gt;</span><span class="n">showInfo</span><span class="p">(</span><span class="n">prefix_cur</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="c1">// recursion</span>
-<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">__print_procTree__</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">child</span><span class="p">,</span><span class="w"> </span><span class="n">depth</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">prefix_next</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">child</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">pProcTree</span><span class="w"> </span><span class="n">child</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="o">-&gt;</span><span class="n">child</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">child</span><span class="o">-&gt;</span><span class="n">brother</span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="p">{</span><span class="w"></span>
-<span class="w">                </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">__print_procTree__</span><span class="p">(</span><span class="n">child</span><span class="o">-&gt;</span><span class="n">brother</span><span class="p">,</span><span class="w"> </span><span class="n">depth</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">prefix_next</span><span class="p">);</span><span class="w"></span>
-<span class="w">                </span><span class="n">child</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">child</span><span class="o">-&gt;</span><span class="n">brother</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<p><code>Python</code> is a good way to convert .md file to .html file automatically. As &lsquo;github.io&rsquo; can only be a statical webpage, use <code>Python</code> could be more convenient than use <code>JS</code> to do so.</p>
+<p>We need 3 3rd libraries: <code>Python-Markdown</code>, <code>pygments</code>, <code>github-markdown-css</code> </p>
+<!-- github link: https://github.com/Python-Markdown/markdown -->
+<h3 id="md-2-html">md 2 html</h3>
+<p><code>Python-Markdown</code> library is what we need, which can be installed by pip:</p>
+<div class="codehilite"><pre><span></span><code>pip install markdown
 </code></pre></div>
 
-<h3 id="main">Main</h3>
-<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">argv</span><span class="p">[])</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">ProcPrinter</span><span class="w"> </span><span class="o">*</span><span class="n">procPrinter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ProcPrinter</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Require argument: process ID&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span><span class="w"></span>
-<span class="w">        </span><span class="n">procPrinter</span><span class="o">-&gt;</span><span class="n">show</span><span class="p">(</span><span class="n">pid</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<p>It&rsquo;s official documents: <a href="https://python-markdown.github.io/reference/">python-markdown</a><br />
+Basic usage:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">content_html</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="n">md_text</span><span class="p">)</span>
 </code></pre></div>
-       
+
+<p>This can only provide very basic functions, the html output is also rudimentary.<br />
+But the markdown library provides a series of extension options for complex cases, for example:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">md_extend</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;extra&#39;</span><span class="p">,</span> <span class="s1">&#39;abbr&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>\
+          <span class="s1">&#39;fenced_code&#39;</span><span class="p">,</span> <span class="s1">&#39;def_list&#39;</span><span class="p">,</span>\
+          <span class="s1">&#39;footnotes&#39;</span><span class="p">,</span> <span class="s1">&#39;md_in_html&#39;</span><span class="p">,</span>\
+          <span class="s1">&#39;tables&#39;</span><span class="p">,</span> <span class="s1">&#39;toc&#39;</span><span class="p">,</span> <span class="s1">&#39;sane_lists&#39;</span><span class="p">,</span>\
+          <span class="s1">&#39;codehilite&#39;</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">,</span> <span class="s1">&#39;nl2br&#39;</span><span class="p">,</span>\
+          <span class="s1">&#39;smarty&#39;</span><span class="p">,</span> <span class="s1">&#39;wikilinks&#39;</span>
+          <span class="p">];</span>
+<span class="n">content_html</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="n">md_text</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span> <span class="n">md_extend</span><span class="p">)</span>
+</code></pre></div>
+
+<blockquote>
+<p>refer from: <a href="https://python-markdown.github.io/extensions/">python-markdown extensions</a></p>
+</blockquote>
+<h3 id="css">CSS</h3>
+<p><code>Python-Markdown</code> library does not previde style sheet, <code>github-markdown-css</code> is a open source markdown css repository.</p>
+<blockquote>
+<p>link：<a href="https://github.com/sindresorhus/github-markdown-css">github-markdown-css</a></p>
+</blockquote>
+<p>we can use the css by CDN or embeding the CSS stylesheet into the HTML.<br />
+❗ remember to check the <strong>README</strong> of the repo first, notice the &lsquo;<strong>Usage</strong>&lsquo; block ❗</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#39;stylesheet&#39;</span> <span class="na">href</span><span class="o">=</span><span class="s">&#39;https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css&#39;</span><span class="p">&gt;</span>
+
+or save as a CSS file:
+
+<span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../css/md-github.css&quot;</span><span class="p">&gt;</span>
+
+or embeding into HTML:
+
+<span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="c">/*  github-markdown-css content </span>
+<span class="c">        ...</span>
+<span class="c">        ...</span>
+<span class="c">    */</span><span class="w"></span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h3 id="code-highlight">Code Highlight</h3>
+<p><code>pygments</code> library can generate code hightlight CSS, use this code as example: </p>
+<div class="codehilite"><pre><span></span><code><span class="n">highlight_css</span> <span class="o">=</span> <span class="n">pygments</span><span class="o">.</span><span class="n">formatters</span><span class="o">.</span><span class="n">HtmlFormatter</span><span class="p">()</span><span class="o">.</span><span class="n">get_style_defs</span><span class="p">(</span><span class="s1">&#39;.codehilite&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="end">End</h3>
+<p>We can design a wrapper, just like what this blog do.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Redalpaca&#39;s site<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="cm">&lt;!-- markdown renderer  --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../css/md-github.css&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../css/md-highlight.css&quot;</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../css/header.css&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../css/footer.css&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;shortcut icon&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../img/icon/avatar.png&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;image/x-icon&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="nc">markdown-body</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">box-sizing</span><span class="p">:</span><span class="w"> </span><span class="kc">border-box</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">min-width</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">max-width</span><span class="p">:</span><span class="w"> </span><span class="mi">980</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="o">(</span><span class="nt">max-width</span><span class="o">:</span><span class="w"> </span><span class="nt">767px</span><span class="o">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nc">markdown-body</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;html-export&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;header&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;left-container&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;avatar&quot;</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">img</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;avatar&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;../img/icon/avatar.png&quot;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&quot;test&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;45&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;header-title&quot;</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Redalpaca&#39;s Blog<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Hi👋, welcome to alpaca land.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;right-container&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h3</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;link-github&quot;</span><span class="p">&gt;</span>GitHub<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h3</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;link-page&quot;</span><span class="p">&gt;</span>Page<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h3</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;link-alpaca&quot;</span><span class="p">&gt;</span>Alpaca<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="cm">&lt;!-- markdown to html content label --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;markdown-body&quot;</span><span class="p">&gt;</span>
+      <span class="cm">&lt;!-- Here is the markdown content --&gt;</span>
+      <span class="cm">&lt;!-- Here is the markdown content --&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;footer&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;personal-info&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;email&quot;</span><span class="p">&gt;</span>zhoualpaca@gmail.com<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;./js/general.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h2 id="method-by-vscode-extension">Method by VScode extension</h2>
+<p>&hellip;to be done</p>
+      <!-- Here is the markdown content -->
+
+
+      <!-- Here is the markdown content -->
       <!-- Here is the markdown content -->
     </div>
     <div class="footer">

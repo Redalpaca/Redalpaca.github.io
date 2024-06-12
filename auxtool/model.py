@@ -52,7 +52,7 @@ def md2html(path_md: str, path_out: str = "./blog/test.html",\
         md_text = f.read()
     content_html = markdown.markdown(md_text, extensions= md_ext)
     
-    out_html = re.sub(r'<!-- Here is the markdown content -->', \
+    out_html = re.sub('<!-- Here is the markdown content -->', \
                       content_html, wrapper_html, count= 1)
     
     # highlight_css = pygments.formatters.HtmlFormatter().get_style_defs('.codehilite')
@@ -69,5 +69,5 @@ def onekey():
 if __name__ == "__main__":
     # updater_index = Updater_Index()
     # updater_index.update()
-    md2html("E:\CodeField_1\Code_script\Redalpaca_Blog\md\Linux process tree - (2).md")
+    md2html("E:/CodeField_1/Code_script/Redalpaca_Blog/md/6_markdown 2 html tutorial.md")
     pass

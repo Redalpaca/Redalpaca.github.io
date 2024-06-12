@@ -49,12 +49,13 @@
     text-decoration: underline;
   } */
   .header .right-container >.link > a {
-    -webkit-text-fill-color: #000000;
+    color: #000000;
+    transition: 0.2s ease;
   }
 
   .header .right-container >.link > a:hover {
-    -webkit-text-fill-color: #0084ff;
+    color: #0084ff;
     cursor: pointer;
-    text-decoration: underline;
+    /* text-decoration: underline; */
   }
   

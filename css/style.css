@@ -1,5 +1,5 @@
 .blue-theme {
-  --background-image-path: "../img/background/mountain_0.jpg";
+  --background-image-path: "../img/background/moon_0.jpg";
   /* zrk note 这些变量名都要改, 到时候更换class就可以直接切换 */
   --color-blog-background: #26497755;
   --color-blog-index:#26497755;
@@ -146,7 +146,7 @@ body {
   /* background-image: url("../img/background/mountain_1.jpg"); */
   /* background-image: url("../img/background/forest_0.jpg"); */
   /* background-image: url("../img/background/mountain_1.jpg"); */
-  background-image: url("../img/background/ocean_0.jpg");
+  background-image: url("../img/background/human_0.jpg");
   /* background-image: url("C:/Users/DELL/Desktop/图库暂存/alessio-soggetti-gdE-5Oui1Y0-unsplash.jpg"); */
   /* background-image: url("../img/background/mountain_blue.jpg"); */
 
